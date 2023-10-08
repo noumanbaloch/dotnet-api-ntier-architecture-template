@@ -1,3 +1,6 @@
+using Serilog;
+using Serilog.Events;
+
 public class Program
 {
     public static void Main(string[] args)
@@ -18,7 +21,7 @@ public class Program
                 connectionString: connectionString,
                 restrictedToMinimumLevel: LogEventLevel.Warning,
                 storageContainerName: containerName,
-                storageFileName: "sharkemm-application-logs.txt",
+                storageFileName: "breeze-application-logs.txt",
                 writeInBatches: true,
                 period: TimeSpan.FromSeconds(2),
                 batchPostingLimit: 100,

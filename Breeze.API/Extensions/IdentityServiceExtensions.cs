@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Breeze.DbCore.Context;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 namespace Breeze.API.Extensions;
@@ -7,7 +10,8 @@ public static class IdentityServiceExtensions
 {
     public static IServiceCollection AddIdentityService(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddIdentity<UserEntity, IdentityRole<int>>(option => {
+        services.AddIdentity<UserEntity, IdentityRole<int>>(option =>
+        {
             option.Password.RequireDigit = false;
             option.Password.RequireLowercase = false;
             option.Password.RequireNonAlphanumeric = false;
@@ -29,7 +33,8 @@ public static class IdentityServiceExtensions
             ClockSkew = TimeSpan.Zero
         };
 
-        services.AddAuthentication(options => {
+        services.AddAuthentication(options =>
+        {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
