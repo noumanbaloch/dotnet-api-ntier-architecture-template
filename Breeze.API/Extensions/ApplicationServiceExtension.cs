@@ -1,4 +1,6 @@
-﻿namespace Breeze.API.Extensions;
+﻿using Breeze.DbCore.UnitOfWork;
+
+namespace Breeze.API.Extensions;
 
 public static class ApplicationServiceExtension
 {

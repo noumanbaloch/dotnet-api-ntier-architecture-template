@@ -1,4 +1,7 @@
-﻿namespace Breeze.API.AutoMappingProfile;
+﻿using Breeze.Models.Dtos.Auth.Request;
+using Breeze.Models.Entities;
+
+namespace Breeze.API.AutoMappingProfile;
 
 public class AutoMappingProfile
 {

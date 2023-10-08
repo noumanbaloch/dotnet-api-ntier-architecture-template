@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Breeze Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,.3);
+            text-align: center;
+        }
+
+        .header {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+        }
+
+        .header h3 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+            color: #117a9b;
+            margin: 0 auto;
+        }
+
+        .lead {
+            font-size: 18px;
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }
+
+        .otp-container {
+            background-color: #117a9b;
+            padding: 20px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .otp-code {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .small {
+            font-size: 14px;
+            line-height: 1.5;
+            margin-top: 30px;
+        }
+
+        .border-top {
+            border-top: 1px solid #eee;
+            margin-top: 50px;
+            padding-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h3>Breeze</h3>
+        </div>
+        <p class="lead">Hi,</p>
+        <p class="lead">Please use the following verification code to login to your Breeze account:</p>
+        <div class="otp-container">
+            <div class="otp-code">{OTPCode}</div>
+        </div>
+        <p class="small">Thank You,<br />From Breeze</p>
+        <hr class="border-top">
+    </div>
+
+</body>
+</html>
