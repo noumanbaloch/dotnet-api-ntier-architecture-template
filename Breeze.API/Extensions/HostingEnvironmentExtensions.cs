@@ -1,4 +1,6 @@
-﻿namespace Breeze.API.Extensions;
+﻿using Breeze.Models.Constants;
+
+namespace Breeze.API.Extensions;
 
 public static class HostingEnvironmentExtensions
 {

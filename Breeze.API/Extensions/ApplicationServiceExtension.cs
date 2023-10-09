@@ -1,4 +1,17 @@
-﻿using Breeze.DbCore.UnitOfWork;
+﻿using Breeze.API.MappingProfile;
+using Breeze.DbCore.Context;
+using Breeze.DbCore.UnitOfWork;
+using Breeze.Services.Auth;
+using Breeze.Services.AzureBlogStorage;
+using Breeze.Services.Cache;
+using Breeze.Services.ClaimResolver;
+using Breeze.Services.DropDown;
+using Breeze.Services.Email;
+using Breeze.Services.HttpHeader;
+using Breeze.Services.OTP;
+using Breeze.Services.TokenService;
+using Microsoft.EntityFrameworkCore;
+using Sharkemm.API.Filter;
 
 namespace Breeze.API.Extensions;
 
@@ -22,6 +35,11 @@ public static class ApplicationServiceExtension
 
         services.AddScoped<IAuthFacadeService, AuthFacadeService>();
         services.AddScoped<IAuthService, AuthService>();
+
+        services.AddScoped<IOTPFacadeService, OTPFacadeService>();
+        services.AddScoped<IOTPService, OTPService>();
+
+        services.AddSingleton<ICacheService, CacheService>();
 
         string connectionString = configuration.GetSection("AzureBlobStorage:ConnectionString").Value!;
         services.AddSingleton<IAzureBlobStorageService>(new AzureBlobStorageService(connectionString));

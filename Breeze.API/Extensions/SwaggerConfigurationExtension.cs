@@ -1,4 +1,5 @@
 ﻿using Microsoft.OpenApi.Models;
+using Sharkemm.API.Filter;
 
 namespace Breeze.API.Extensions;
 
@@ -40,6 +41,7 @@ public static class SwaggerConfigurationExtension
                         new List<string>()
                     }
             });
+            if (env.IsDevelopment() || env.IsQA()) c.OperationFilter<AddHeaderParameterFilter>();
         });
 
         return services;

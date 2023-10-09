@@ -16,7 +16,7 @@ public static class EntityToDtoMappingExtensions
         };
     }
 
-    public static CreateTokenRequestDto ToCreateTokenRequesDto(this UserEntity user, List<string> roles, StudentEntity student)
+    public static CreateTokenRequestDto ToCreateTokenRequesDto(this UserEntity user, List<string> roles)
     {
         return new CreateTokenRequestDto
         {
@@ -25,8 +25,6 @@ public static class EntityToDtoMappingExtensions
             LastName = user.LastName,
             UserName = user.UserName ?? string.Empty,
             PhoneNumber = user.PhoneNumber ?? string.Empty,
-            StudentId = student.Id,
-            DisciplineId = student.DisciplineId,
             Roles = roles
         };
     }

@@ -13,6 +13,7 @@ public struct ApiStatusCodes
     public const short RECORD_NOT_FOUND = 107;
     public const short USER_DOES_NOT_EXIST = 108;
     public const short PASSWORD_IS_INVALID = 110;
+    public const short UN_RECOGNIZED_DEVICE = 111;
 
     // 200 series for success
     public const short RECORD_SAVED_SUCCESSFULLY = 200;
@@ -51,6 +52,7 @@ public struct ApiResponseMessages
     public const string WELCOME_MESSAGE = "Welcome, ";
     public const string WELCOME_BACK_MESSAGE = "Welcome back, ";
     public const string PASSWORD_IS_INVALID = "Password is invalid.";
+    public const string UN_RECOGNIZED_DEVICE = "Unrecognized device.";
 }
 
 public struct ExceptionMessages

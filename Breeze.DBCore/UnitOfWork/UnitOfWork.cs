@@ -1,5 +1,6 @@
 ﻿using Breeze.DbCore.Context;
 using Breeze.DbCore.GenericRepository;
+using Breeze.Models.Configurations;
 using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;

@@ -1,4 +1,5 @@
 ﻿using Breeze.DbCore.Context;
+using Breeze.Models.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;

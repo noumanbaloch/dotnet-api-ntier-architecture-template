@@ -27,6 +27,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Breeze.DBCore\Breeze.DBCore.csproj" />
     <ProjectReference Include="..\Breeze.Models\Breeze.Models.csproj" />
+    <ProjectReference Include="..\Breeze.Services\Breeze.Services.csproj" />
   </ItemGroup>
 
 </Project>

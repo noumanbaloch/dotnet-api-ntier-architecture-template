@@ -18,7 +18,9 @@ public struct DapperSPParams
 public struct TableNames
 {
     public const string USERS_TABLE = "users";
+    public const string COLLEGES_TABLE = "colleges";
     public const string OTP_CODES_TABLE = "otp_codes";
+    public const string BOARD_DETAILS_TABLE = "board_details";
 }
 
 public struct DbColumnNames
@@ -41,6 +43,10 @@ public struct DbColumnNames
     public const string TRUSTED_DEVICE_ID = "trusted_device_id";
     public const string ACCEPTED_TERMS_AND_CONDITIONS = "accepted_terms_and_conditions";
     public const string USER_NAME = "user_name";
+    public const string COLLEGE_NAME = "college_name";
+    public const string BOARD_ID = "board_id";
+    public const string BOARD_NAME = "board_name";
+    public const string COLLEGE_ID = "college_id";
 }
 
 public struct UserRoles

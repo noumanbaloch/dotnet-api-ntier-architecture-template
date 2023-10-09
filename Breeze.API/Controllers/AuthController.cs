@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Breeze.Models.Dtos.Auth.Request;
+using Breeze.Services.Auth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Breeze.API.Controllers;
@@ -30,6 +32,10 @@ public class AuthController : BaseApiController
     [AllowAnonymous]
     public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequestDto requestDto)
         => Ok(await _authService.ForgotPassword(requestDto));
+
+    [HttpPost]
+    public async Task<IActionResult> VerifyEmail([FromBody] VerifyEmailRequestDto requestDto)
+     => Ok(await _authService.VerifyEmail(requestDto));
 
     [HttpGet]
     [AllowAnonymous]

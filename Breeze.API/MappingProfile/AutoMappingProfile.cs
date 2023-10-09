@@ -1,11 +1,17 @@
-﻿using Breeze.Models.Dtos.Auth.Request;
+﻿using AutoMapper;
+using Breeze.Models.Dtos.Auth.Request;
+using Breeze.Models.Dtos.DropDown.Response;
+using Breeze.Models.Dtos.Email.Request;
+using Breeze.Models.Dtos.OTP.Request;
+using Breeze.Models.Dtos.OTP.Response;
+using Breeze.Models.Dtos.Token.Request;
 using Breeze.Models.Entities;
+using Breeze.Utilities;
 
-namespace Breeze.API.AutoMappingProfile;
+namespace Breeze.API.MappingProfile;
 
-public class AutoMappingProfile
+public class AutoMappingProfile : Profile
 {
-
     public AutoMappingProfile()
     {
         ConfigureDtoToDtoMapping();

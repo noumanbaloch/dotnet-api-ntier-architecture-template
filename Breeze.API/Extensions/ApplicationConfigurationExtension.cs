@@ -1,4 +1,6 @@
-﻿namespace Breeze.API.Extensions;
+﻿using Breeze.Models.Configurations;
+
+namespace Breeze.API.Extensions;
 
 public static class ApplicationConfigurationExtension
 {

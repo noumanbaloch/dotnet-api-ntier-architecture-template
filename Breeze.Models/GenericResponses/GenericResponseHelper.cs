@@ -8,9 +8,9 @@ public static class GenericResponseHelper
     {
         return result switch
         {
-            ResponseEnums.Success => GenericResponse.Success(ApiResponseMessages.USER_LOGIN_SUCCESSFULLY, ApiStatusCodes.USER_LOGIN_SUCCESSFULLY)
+            ResponseEnums.Success => GenericResponse.Success(ApiResponseMessages.USER_LOGIN_SUCCESSFULLY, ApiStatusCodes.USER_LOGIN_SUCCESSFULLY),
 
             _ => GenericResponse.Failure(ApiResponseMessages.SOMETHING_WENT_WRONG, ApiStatusCodes.SOMETHING_WENT_WRONG),
-        }; ;
+        };
     }
 }
