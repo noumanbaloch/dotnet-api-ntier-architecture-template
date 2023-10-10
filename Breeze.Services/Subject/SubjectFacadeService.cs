@@ -14,7 +14,7 @@ public class SubjectFacadeService : ISubjectFacadeService
 
     public async Task<GenericResponse<IEnumerable<SubjectSummarySPDto>>> GetSubjectSummary(int subjectId)
     {
-        var result = await _subjectService.GetSubjectsSummary(subjectId);
+        var result = await _subjectService.GetSubjectSummary(subjectId);
 
         if (!result.Any())
         {

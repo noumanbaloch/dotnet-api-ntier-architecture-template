@@ -7,8 +7,7 @@ public struct Usernames
 
 public struct StoreProcedureNames
 {
-    public const string GET_USER_DATA = "procGetUserData";
-    public const string GET_SUBJECTS_SUMMARY = "procGetSubjectsSummary";
+    public const string GET_SUBJECT_SUMMARY = "procGetSubjectSummary";
 }
 
 public struct DapperSPParams

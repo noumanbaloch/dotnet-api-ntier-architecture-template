@@ -3,5 +3,5 @@
 namespace Breeze.Services.Subject;
 public interface ISubjectService
 {
-    Task<IEnumerable<SubjectSummarySPDto>> GetSubjectsSummary(int subjectId);
+    Task<IEnumerable<SubjectSummarySPDto>> GetSubjectSummary(int subjectId);
 }

@@ -15,9 +15,9 @@ public class SubjectService : ISubjectService
         _paramBuilderService = paramBuilderService;
     }
 
-    public async Task<IEnumerable<SubjectSummarySPDto>> GetSubjectsSummary(int subjectId)
+    public async Task<IEnumerable<SubjectSummarySPDto>> GetSubjectSummary(int subjectId)
     {
         var parameters = _paramBuilderService.BuildDynamicParameters(subjectId);
-        return await _unitOfWork.DapperSpListWithParamsAsync<SubjectSummarySPDto>($"{CommandConstants.EXEC_COMMAND} {StoreProcedureNames.GET_SUBJECTS_SUMMARY} {DapperSPParams.STUDENT_ID}, {DapperSPParams.DISCIPLINE_ID}, {DapperSPParams.SUBJECT_ID}", parameters);
+        return await _unitOfWork.DapperSpListWithParamsAsync<SubjectSummarySPDto>($"{CommandConstants.EXEC_COMMAND} {StoreProcedureNames.GET_SUBJECT_SUMMARY} {DapperSPParams.STUDENT_ID}, {DapperSPParams.DISCIPLINE_ID}, {DapperSPParams.SUBJECT_ID}", parameters);
     }
 }

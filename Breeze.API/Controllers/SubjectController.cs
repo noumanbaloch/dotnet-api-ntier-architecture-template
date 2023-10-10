@@ -12,6 +12,6 @@ public class SubjectController : BaseApiController
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetChaptersSummary(int subjectId)
+    public async Task<IActionResult> GetSubjectSummary(int subjectId)
         => Ok(await _subjectFacadeService.GetSubjectSummary(subjectId));
 }
