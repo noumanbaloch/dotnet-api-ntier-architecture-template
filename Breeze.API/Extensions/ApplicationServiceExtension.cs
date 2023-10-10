@@ -3,7 +3,6 @@ using Breeze.API.MappingProfile;
 using Breeze.DbCore.Context;
 using Breeze.DbCore.UnitOfWork;
 using Breeze.Services.Auth;
-using Breeze.Services.AzureBlogStorage;
 using Breeze.Services.Cache;
 using Breeze.Services.ClaimResolver;
 using Breeze.Services.DropDown;
@@ -48,8 +47,8 @@ public static class ApplicationServiceExtension
 
         services.AddScoped<IParamBuilderService, ParamBuilderService>();
 
-        string connectionString = configuration.GetSection("AzureBlobStorage:ConnectionString").Value!;
-        services.AddSingleton<IAzureBlobStorageService>(new AzureBlobStorageService(connectionString));
+        //string connectionString = configuration.GetSection("AzureBlobStorage:ConnectionString").Value!;
+        //services.AddSingleton<IAzureBlobStorageService>(new AzureBlobStorageService(connectionString));
 
 
         //string keyVaultUrl = "https://yourserver-azurekeyvault.vault.azure.net/";

@@ -1,38 +1,37 @@
 using Breeze.API;
 using Breeze.Models.Constants;
 using Serilog;
-using Serilog.Events;
 
 public class Program
 {
     public static void Main(string[] args)
     {
-        var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+        //var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
-        var configuration = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-            .AddJsonFile($"appsettings.{environmentName}.json", optional: true, reloadOnChange: true)
-            .AddEnvironmentVariables()
-            .Build();
+        //var configuration = new ConfigurationBuilder()
+        //    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+        //    .AddJsonFile($"appsettings.{environmentName}.json", optional: true, reloadOnChange: true)
+        //    .AddEnvironmentVariables()
+        //    .Build();
 
-        var connectionString = configuration["AzureBlobStorage:ConnectionString"];
-        var containerName = ContainerNames.APPLICATION_LOGS_CONTAINER;
+        //var connectionString = configuration["AzureBlobStorage:ConnectionString"];
+        //var containerName = ContainerNames.APPLICATION_LOGS_CONTAINER;
 
-        Log.Logger = new LoggerConfiguration()
-            .WriteTo.AzureBlobStorage(
-                connectionString: connectionString,
-                restrictedToMinimumLevel: LogEventLevel.Warning,
-                storageContainerName: containerName,
-                storageFileName: "breeze-application-logs.txt",
-                writeInBatches: true,
-                period: TimeSpan.FromSeconds(2),
-                batchPostingLimit: 100,
-                bypassBlobCreationValidation: false,
-                cloudBlobProvider: null,
-                blobSizeLimitBytes: 5000000,
-                retainedBlobCountLimit: null,
-                useUtcTimeZone: true)
-            .CreateLogger();
+        //Log.Logger = new LoggerConfiguration()
+        //    .WriteTo.AzureBlobStorage(
+        //        connectionString: connectionString,
+        //        restrictedToMinimumLevel: LogEventLevel.Warning,
+        //        storageContainerName: containerName,
+        //        storageFileName: "breeze-application-logs.txt",
+        //        writeInBatches: true,
+        //        period: TimeSpan.FromSeconds(2),
+        //        batchPostingLimit: 100,
+        //        bypassBlobCreationValidation: false,
+        //        cloudBlobProvider: null,
+        //        blobSizeLimitBytes: 5000000,
+        //        retainedBlobCountLimit: null,
+        //        useUtcTimeZone: true)
+        //    .CreateLogger();
 
         try
         {
