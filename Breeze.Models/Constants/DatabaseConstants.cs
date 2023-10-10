@@ -8,11 +8,16 @@ public struct Usernames
 public struct StoreProcedureNames
 {
     public const string GET_USER_DATA = "procGetUserData";
+    public const string GET_SUBJECTS_SUMMARY = "procGetSubjectsSummary";
 }
 
 public struct DapperSPParams
 {
-    public const string USER_ID = "@userId";
+    public const string STUDENT_ID = "@studentId";
+    public const string SUBJECT_ID = "@subjectId";
+    public const string CHAPTER_ID = "@chapterId";
+    public const string CARD_TYPE_ID = "@cardTypeId";
+    public const string DISCIPLINE_ID = "@disciplineId";
 }
 
 public struct TableNames

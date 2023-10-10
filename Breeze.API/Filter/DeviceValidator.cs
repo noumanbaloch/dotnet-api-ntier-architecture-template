@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Security.Claims;
 
-namespace Sharkemm.API.Filter;
+namespace Breeze.API.Filter;
 
 public class DeviceValidator : ActionFilterAttribute
 {

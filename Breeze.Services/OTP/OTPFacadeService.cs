@@ -42,7 +42,7 @@ public class OTPFacadeService : IOTPFacadeService
         }
 
         if (!await _otpService.IsValideOTP(requestDto))
-            return GenericResponse<bool>.Failure(ApiResponseMessages.INVALID_OTP, ApiStatusCodes.INVALID_OTP);
+            return GenericResponse<bool>.Failure(ApiResponseMessages.INVALID_VERIFICATION_CODE, ApiStatusCodes.INVALID_VERIFICATION_CODE);
 
         if (user.TrustedDeviceId.ToLower() != _httpHeaderService.GetHeader(PropertyNames.DEVICE_ID).ToString())
         {

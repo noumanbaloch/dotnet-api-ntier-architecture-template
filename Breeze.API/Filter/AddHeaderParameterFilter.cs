@@ -1,7 +1,7 @@
 ﻿using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Sharkemm.API.Filter;
+namespace Breeze.API.Filter;
 public class AddHeaderParameterFilter : IOperationFilter
 {
     public void Apply(OpenApiOperation operation, OperationFilterContext context)

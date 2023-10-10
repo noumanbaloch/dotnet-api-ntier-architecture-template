@@ -11,6 +11,8 @@ public static class EntityToDtoMappingExtensions
         return new UserResponseDto
         {
             UserName = user.UserName!,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
             Token = token,
             PhotoUrl = string.Empty
         };

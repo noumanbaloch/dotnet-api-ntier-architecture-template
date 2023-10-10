@@ -5,7 +5,7 @@ public struct ApiStatusCodes
     // 100 series for failures
     public const short RECORD_ALREADY_EXIST = 100;
     public const short INVALID_USERNAME_OR_PASSWORD = 101;
-    public const short INVALID_OTP = 102;
+    public const short INVALID_VERIFICATION_CODE = 102;
     public const short UNABLE_TO_COMPLETE_PROCESS = 103;
     public const short USER_ALREADY_EXIST = 104;
     public const short PASSWORD_NOT_CHANGED = 105;
@@ -35,7 +35,7 @@ public struct ApiResponseMessages
     public const string RECORD_SAVED_SUCCESSFULLY = "Record saved successfully.";
     public const string INVALID_USERNAME_OR_PASSWORD = "Invalid username or password.";
     public const string USER_LOGIN_SUCCESSFULLY = "User logged in successfully.";
-    public const string INVALID_OTP = "Invalid OTP code.";
+    public const string INVALID_VERIFICATION_CODE = "Invalid verification code.";
     public const string USER_ALREADY_EXIST = "User already exists.";
     public const string UNABLE_TO_COMPLETE_PROCESS = "Unable to complete the requested process.";
     public const string VERIFICATION_CODE_SENT = "Verification Code Sent! Please check your inbox and spam folder.";
