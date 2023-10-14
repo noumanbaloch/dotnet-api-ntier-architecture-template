@@ -33,10 +33,6 @@ public class AuthController : BaseApiController
     public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequestDto requestDto)
         => Ok(await _authService.ForgotPassword(requestDto));
 
-    [HttpPost]
-    public async Task<IActionResult> VerifyEmail([FromBody] VerifyEmailRequestDto requestDto)
-     => Ok(await _authService.VerifyEmail(requestDto));
-
     [HttpGet]
     [AllowAnonymous]
     public async Task<IActionResult> CheckForUserExists(string userName)

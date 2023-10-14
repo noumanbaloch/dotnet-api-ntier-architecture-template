@@ -4,14 +4,11 @@ using Breeze.Models.ApplicationEnums;
 using Breeze.Models.Constants;
 using Breeze.Models.Dtos.Auth.Request;
 using Breeze.Models.Dtos.Auth.Response;
-using Breeze.Models.Dtos.Email.Request;
-using Breeze.Models.Dtos.OTP.Request;
 using Breeze.Models.Entities;
 using Breeze.Models.ModelMapping;
 using Breeze.Services.Cache;
 using Breeze.Services.ClaimResolver;
 using Breeze.Services.HttpHeader;
-using Breeze.Services.OTP;
 using Breeze.Services.TokenService;
 using Breeze.Utilities;
 using Microsoft.AspNetCore.Identity;
@@ -26,9 +23,8 @@ public class AuthService : IAuthService
     private readonly ICacheService _cacheService;
     private readonly SignInManager<UserEntity> _signInManager;
     private readonly UserManager<UserEntity> _userManager;
-    private readonly IOTPService _otpService;
-    private readonly ITokenService _tokenService;
     private readonly IClaimResolverService _claimResolverService;
+    private readonly ITokenService _tokenService;
 
     public AuthService(IUnitOfWork unitOfWork,
         IHttpHeaderService httpHeaderService,
@@ -36,9 +32,8 @@ public class AuthService : IAuthService
         ICacheService cacheService,
         SignInManager<UserEntity> signInManager,
         UserManager<UserEntity> userManager,
-        IOTPService otpService,
-        ITokenService tokenService,
-        IClaimResolverService claimResolverService)
+        IClaimResolverService claimResolverService,
+        ITokenService tokenService)
     {
         _unitOfWork = unitOfWork;
         _httpHeaderService = httpHeaderService;
@@ -46,33 +41,12 @@ public class AuthService : IAuthService
         _cacheService = cacheService;
         _signInManager = signInManager;
         _userManager = userManager;
-        _otpService = otpService;
-        _tokenService = tokenService;
         _claimResolverService = claimResolverService;
+        _tokenService = tokenService;
     }
-
 
     public async Task<(ResponseEnums, UserResponseDto?)> Register(RegisterRequestDto requestDto)
     {
-        if (await UserExists(requestDto.UserName))
-        {
-            return (ResponseEnums.UserAlreadyExist, null);
-        }
-
-        if (string.IsNullOrWhiteSpace(requestDto.OTPCode))
-        {
-            await _otpService.InvalidateExistingOTPs(requestDto.UserName);
-            var otpResponseDto = _otpService.GenerateOTP(_mapper.Map<GenerateOTPRequestDto>(requestDto));
-            await _otpService.SaveOTP(_mapper.Map<SaveOTPRequestDto>(otpResponseDto));
-            await _otpService.SendOTPEmail(_mapper.Map<OTPEmailRequestDTO>(otpResponseDto));
-            return (ResponseEnums.VerificationCodeSent, null);
-        }
-
-        if (!await _otpService.IsValideOTP(_mapper.Map<VerifyOTPRequestDto>(requestDto)))
-        {
-            return (ResponseEnums.InvalidVerificationCode, null);
-        }
-
         using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
         {
             var user = requestDto.ToUserEntity(_httpHeaderService.GetHeader(PropertyNames.DEVICE_ID).ToString());
@@ -89,6 +63,7 @@ public class AuthService : IAuthService
                 return (ResponseEnums.UnableToCompleteProcess, null);
             }
 
+
             var assignedRoles = await _userManager.AddToRoleAsync(user, UserRoles.ADMIN_ROLE);
 
             if (!assignedRoles.Succeeded)
@@ -98,8 +73,8 @@ public class AuthService : IAuthService
             }
 
             var roles = await _userManager.GetRolesAsync(user);
-
             var token = _tokenService.GenerateToken(user.ToCreateTokenRequesDto(roles.ToList()));
+
 
             scope.Complete();
 
@@ -107,41 +82,8 @@ public class AuthService : IAuthService
         }
     }
 
-    public async Task<(ResponseEnums, UserResponseDto?)> Login(LoginRequestDto requestDto)
+    public async Task<(ResponseEnums, UserResponseDto?)> Login(UserEntity user)
     {
-        var user = await _userManager.FindByNameAsync(requestDto.UserName);
-        if (user is null || !await UserExists(requestDto.UserName))
-        {
-            return (ResponseEnums.InvalidUsernamePassword, null);
-        }
-
-        var deviceIdIsTrusted = await ValidateTrustedDevice(user.UserName!, _httpHeaderService.GetHeader(PropertyNames.DEVICE_ID).ToString());
-        var signInResult = await _signInManager.CheckPasswordSignInAsync(user, requestDto.Password, false);
-
-        if (!signInResult.Succeeded)
-        {
-            return (ResponseEnums.InvalidUsernamePassword, null);
-        }
-
-        if (!deviceIdIsTrusted && string.IsNullOrWhiteSpace(requestDto.OTPCode))
-        {
-            await _otpService.InvalidateExistingOTPs(requestDto.UserName);
-            var otpResponseDto = _otpService.GenerateOTP(_mapper.Map<GenerateOTPRequestDto>(requestDto));
-            await _otpService.SaveOTP(_mapper.Map<SaveOTPRequestDto>(otpResponseDto));
-            await _otpService.SendOTPEmail(_mapper.Map<OTPEmailRequestDTO>(otpResponseDto));
-            return (ResponseEnums.VerificationCodeSent, null);
-        }
-
-        if (!deviceIdIsTrusted && !await _otpService.IsValideOTP(_mapper.Map<VerifyOTPRequestDto>(requestDto)))
-        {
-            return (ResponseEnums.InvalidVerificationCode, null);
-        }
-
-        if (!deviceIdIsTrusted)
-        {
-            await UpdateDevice(user.UserName!);
-        }
-
         var roles = await _userManager.GetRolesAsync(user);
 
         var token = _tokenService.GenerateToken(user.ToCreateTokenRequesDto(roles.ToList()));
@@ -185,70 +127,15 @@ public class AuthService : IAuthService
         return (ResponseEnums.PasswordChangedSuccessfully, user.ToUserResponseDto(token));
     }
 
-    public async Task<(ResponseEnums, UserResponseDto?)> ForgotPassword(ForgotPasswordRequestDto requestDto)
+    public async Task<(ResponseEnums, UserResponseDto?)> ForgotPassword(UserEntity user, string newPassword)
     {
-
-        var user = await _userManager.FindByNameAsync(requestDto.UserName);
-        if (user is null || !await UserExists(requestDto.UserName))
-        {
-            return (ResponseEnums.InvalidUsernamePassword, null);
-        }
-
-        if (string.IsNullOrWhiteSpace(requestDto.OTPCode))
-        {
-            await _otpService.InvalidateExistingOTPs(requestDto.UserName);
-            var otpResponseDto = _otpService.GenerateOTP(_mapper.Map<GenerateOTPRequestDto>(requestDto));
-            await _otpService.SaveOTP(_mapper.Map<SaveOTPRequestDto>(otpResponseDto));
-            await _otpService.SendOTPEmail(_mapper.Map<OTPEmailRequestDTO>(otpResponseDto));
-
-            return (ResponseEnums.VerificationCodeSent, null);
-        }
-
-        var isValidOTP = await _otpService.IsValideOTP(_mapper.Map<VerifyOTPRequestDto>(requestDto));
-
-        if (!isValidOTP)
-        {
-            return (ResponseEnums.InvalidVerificationCode, null);
-        }
-
-        await ChangeUserPassword(user, requestDto.NewPassword);
+        await ChangeUserPassword(user, newPassword);
 
         var roles = await _userManager.GetRolesAsync(user);
 
         var token = _tokenService.GenerateToken(user.ToCreateTokenRequesDto(roles.ToList()));
 
         return (ResponseEnums.UserLoginSuccessfully, user.ToUserResponseDto(token));
-    }
-
-    public async Task<ResponseEnums> VerifyEmail(VerifyEmailRequestDto requestDto)
-    {
-        var user = await _userManager.FindByNameAsync(requestDto.UserName);
-        if (user is null || !await UserExists(requestDto.UserName))
-        {
-            return ResponseEnums.UserDoesNotExist;
-        }
-
-        if ((!user.EmailConfirmed) && string.IsNullOrWhiteSpace(requestDto.OTPCode))
-        {
-            await _otpService.InvalidateExistingOTPs(requestDto.UserName);
-            var otpResponseDto = _otpService.GenerateOTP(_mapper.Map<GenerateOTPRequestDto>(requestDto));
-            await _otpService.SaveOTP(_mapper.Map<SaveOTPRequestDto>(otpResponseDto));
-            await _otpService.SendOTPEmail(_mapper.Map<OTPEmailRequestDTO>(otpResponseDto));
-            return ResponseEnums.VerificationCodeSent;
-        }
-
-        if ((!user.EmailConfirmed) && !await _otpService.IsValideOTP(_mapper.Map<VerifyOTPRequestDto>(requestDto)))
-        {
-            return ResponseEnums.InvalidVerificationCode;
-        }
-
-        if (!user.EmailConfirmed)
-        {
-            user.EmailConfirmed = true;
-            await _userManager.UpdateAsync(user);
-        }
-
-        return ResponseEnums.EmailVerifiedSuccessfully;
     }
 
     public async Task<(ResponseEnums, UserResponseDto?)> UpdateProfile(UpdateProfileRequestDto requestDto)
@@ -273,7 +160,6 @@ public class AuthService : IAuthService
 
 
         var roles = await _userManager.GetRolesAsync(user);
-
         var token = _tokenService.GenerateToken(user.ToCreateTokenRequesDto(roles.ToList()));
 
         return (ResponseEnums.ProfileUpdatedSuccessfully, user.ToUserResponseDto(token));
@@ -336,7 +222,26 @@ public class AuthService : IAuthService
         x.UserName != userName &&
         x.Deleted == false);
 
-    #region Private methods
+
+    public async Task<UserEntity?> CheckForValidUserNamePassword(string userName, string Password)
+    {
+        var user = await _userManager.FindByNameAsync(userName);
+        if (user is null || !await UserExists(userName))
+        {
+            return null;
+        }
+
+        var signInResult = await _signInManager.CheckPasswordSignInAsync(user, userName, false);
+
+        if (!signInResult.Succeeded)
+        {
+            return null;
+        }
+
+        return user;
+    }
+    #region private Methods
+
     private async Task<IdentityResult> ChangeUserPassword(UserEntity user, string newPassword)
     {
         await _signInManager.SignOutAsync();

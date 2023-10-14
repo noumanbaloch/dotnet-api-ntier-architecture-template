@@ -1,23 +1,56 @@
-﻿using Breeze.Models.ApplicationEnums;
+﻿using AutoMapper;
+using Breeze.Models.ApplicationEnums;
 using Breeze.Models.Constants;
 using Breeze.Models.Dtos.Auth.Request;
 using Breeze.Models.Dtos.Auth.Response;
+using Breeze.Models.Dtos.Email.Request;
+using Breeze.Models.Dtos.OTP.Request;
 using Breeze.Models.GenericResponses;
+using Breeze.Services.HttpHeader;
+using Breeze.Services.OTP;
 
 namespace Breeze.Services.Auth;
 
 public class AuthFacadeService : IAuthFacadeService
 {
     private readonly IAuthService _authService;
+    private readonly IOTPService _otpService;
+    private readonly IMapper _mapper;
+    private readonly IHttpHeaderService _httpHeaderService;
 
     public AuthFacadeService(
-        IAuthService authService)
+        IAuthService authService,
+        IOTPService otpService,
+        IMapper mapper,
+        IHttpHeaderService httpHeaderService)
     {
         _authService = authService;
+        _otpService = otpService;
+        _mapper = mapper;
+        _httpHeaderService = httpHeaderService;
     }
 
     public async Task<GenericResponse<UserResponseDto>> Register(RegisterRequestDto requestDto)
     {
+        if (await _authService.UserExists(requestDto.UserName))
+        {
+            return GenericResponse<UserResponseDto>.Failure(ApiResponseMessages.USER_ALREADY_EXIST, ApiStatusCodes.USER_ALREADY_EXIST);
+        }
+
+        if (string.IsNullOrWhiteSpace(requestDto.OTPCode))
+        {
+            await _otpService.InvalidateExistingOTPs(requestDto.UserName);
+            var otpResponseDto = _otpService.GenerateOTP(_mapper.Map<GenerateOTPRequestDto>(requestDto));
+            await _otpService.SaveOTP(_mapper.Map<SaveOTPRequestDto>(otpResponseDto));
+            await _otpService.SendOTPEmail(_mapper.Map<OTPEmailRequestDTO>(otpResponseDto));
+            return GenericResponse<UserResponseDto>.Success(ApiResponseMessages.VERIFICATION_CODE_SENT, ApiStatusCodes.VERIFICATION_CODE_SENT);
+        }
+
+        if (!await _otpService.IsValideOTP(_mapper.Map<VerifyOTPRequestDto>(requestDto)))
+        {
+            return GenericResponse<UserResponseDto>.Failure(ApiResponseMessages.INVALID_VERIFICATION_CODE, ApiStatusCodes.INVALID_VERIFICATION_CODE);
+        }
+
         var result = await _authService.Register(requestDto);
 
         if (result.Item1 == ResponseEnums.UserRegisteredSuccessfully)
@@ -30,7 +63,34 @@ public class AuthFacadeService : IAuthFacadeService
 
     public async Task<GenericResponse<UserResponseDto>> Login(LoginRequestDto requestDto)
     {
-        var result = await _authService.Login(requestDto);
+        var user = await _authService.CheckForValidUserNamePassword(requestDto.UserName, requestDto.Password);
+
+        if (user == null)
+        {
+            return GenericResponse<UserResponseDto>.Failure(ApiResponseMessages.INVALID_USERNAME_OR_PASSWORD, ApiStatusCodes.INVALID_USERNAME_OR_PASSWORD);
+
+        }
+
+        var deviceIdIsTrusted = await _authService.ValidateTrustedDevice(user.UserName!, _httpHeaderService.GetHeader(PropertyNames.DEVICE_ID).ToString());
+        if (!deviceIdIsTrusted && string.IsNullOrWhiteSpace(requestDto.OTPCode))
+        {
+            await _otpService.InvalidateExistingOTPs(requestDto.UserName);
+            var otpResponseDto = _otpService.GenerateOTP(_mapper.Map<GenerateOTPRequestDto>(requestDto));
+            await _otpService.SaveOTP(_mapper.Map<SaveOTPRequestDto>(otpResponseDto));
+            await _otpService.SendOTPEmail(_mapper.Map<OTPEmailRequestDTO>(otpResponseDto));
+            return GenericResponse<UserResponseDto>.Success(ApiResponseMessages.VERIFICATION_CODE_SENT, ApiStatusCodes.VERIFICATION_CODE_SENT);
+        }
+        if (!deviceIdIsTrusted && !await _otpService.IsValideOTP(_mapper.Map<VerifyOTPRequestDto>(requestDto)))
+        {
+            return GenericResponse<UserResponseDto>.Failure(ApiResponseMessages.INVALID_VERIFICATION_CODE, ApiStatusCodes.INVALID_VERIFICATION_CODE);
+        }
+
+        if (!deviceIdIsTrusted)
+        {
+            await _authService.UpdateDevice(user.UserName!);
+        }
+
+        var result = await _authService.Login(user);
 
         if (result.Item1 == ResponseEnums.UserLoginSuccessfully)
         {
@@ -46,7 +106,7 @@ public class AuthFacadeService : IAuthFacadeService
 
         if (result.Item1 == ResponseEnums.PasswordChangedSuccessfully)
         {
-            return GenericResponseHelper.GenerateEnumToGenericResponse(result.Item1, result.Item2, result!.Item2!.FirstName);
+            return GenericResponseHelper.GenerateEnumToGenericResponse(result.Item1, result.Item2);
         }
 
         return GenericResponseHelper.GenerateEnumToGenericResponse<UserResponseDto>(result.Item1, null);
@@ -54,23 +114,34 @@ public class AuthFacadeService : IAuthFacadeService
 
     public async Task<GenericResponse<UserResponseDto>> ForgotPassword(ForgotPasswordRequestDto requestDto)
     {
-        var result = await _authService.ForgotPassword(requestDto);
+        var user = await _authService.GetUserByUsername(requestDto.UserName);
+        if (user is null || !await _authService.UserExists(requestDto.UserName))
+        {
+            return GenericResponse<UserResponseDto>.Failure(ApiResponseMessages.INVALID_USERNAME_OR_PASSWORD, ApiStatusCodes.INVALID_USERNAME_OR_PASSWORD);
+        }
+
+        if (string.IsNullOrWhiteSpace(requestDto.OTPCode))
+        {
+            await _otpService.InvalidateExistingOTPs(requestDto.UserName);
+            var otpResponseDto = _otpService.GenerateOTP(_mapper.Map<GenerateOTPRequestDto>(requestDto));
+            await _otpService.SaveOTP(_mapper.Map<SaveOTPRequestDto>(otpResponseDto));
+            await _otpService.SendOTPEmail(_mapper.Map<OTPEmailRequestDTO>(otpResponseDto));
+
+            return GenericResponse<UserResponseDto>.Success(ApiResponseMessages.VERIFICATION_CODE_SENT, ApiStatusCodes.VERIFICATION_CODE_SENT);
+        }
+
+        var isValidOTP = await _otpService.IsValideOTP(_mapper.Map<VerifyOTPRequestDto>(requestDto));
+
+        if (!isValidOTP)
+        {
+            return GenericResponse<UserResponseDto>.Failure(ApiResponseMessages.INVALID_VERIFICATION_CODE, ApiStatusCodes.INVALID_VERIFICATION_CODE);
+        }
+
+        var result = await _authService.ForgotPassword(user, requestDto.NewPassword);
 
         if (result.Item1 == ResponseEnums.UserLoginSuccessfully)
         {
-            return GenericResponseHelper.GenerateEnumToGenericResponse(result.Item1, result.Item2);
-        }
-
-        return GenericResponseHelper.GenerateEnumToGenericResponse<UserResponseDto>(result.Item1, null);
-    }
-
-    public async Task<GenericResponse<UserResponseDto>> UpdateProfile(UpdateProfileRequestDto requestDto)
-    {
-        var result = await _authService.UpdateProfile(requestDto);
-
-        if (result.Item1 == ResponseEnums.ProfileUpdatedSuccessfully)
-        {
-            return GenericResponseHelper.GenerateEnumToGenericResponse(result.Item1, result.Item2);
+            return GenericResponseHelper.GenerateEnumToGenericResponse(result.Item1, result.Item2, result!.Item2!.FirstName);
         }
 
         return GenericResponseHelper.GenerateEnumToGenericResponse<UserResponseDto>(result.Item1, null);
@@ -86,11 +157,15 @@ public class AuthFacadeService : IAuthFacadeService
         return GenericResponse<bool>.Success(true, ApiResponseMessages.USER_ALREADY_EXIST, ApiStatusCodes.USER_ALREADY_EXIST);
     }
 
-    public async Task<GenericResponse> VerifyEmail(VerifyEmailRequestDto requestDto)
+    public async Task<GenericResponse<UserResponseDto>> UpdateProfile(UpdateProfileRequestDto requestDto)
     {
-        var result = await _authService.VerifyEmail(requestDto);
-        return GenericResponseHelper.GenerateEnumToGenericResponse(result);
+        var result = await _authService.UpdateProfile(requestDto);
+
+        if (result.Item1 == ResponseEnums.ProfileUpdatedSuccessfully)
+        {
+            return GenericResponseHelper.GenerateEnumToGenericResponse(result.Item1, result.Item2);
+        }
+
+        return GenericResponseHelper.GenerateEnumToGenericResponse<UserResponseDto>(result.Item1, null);
     }
-
-
 }

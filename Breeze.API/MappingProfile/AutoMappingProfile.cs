@@ -30,7 +30,6 @@ public class AutoMappingProfile : Profile
         CreateMap<OTPResponseDto, OTPEmailRequestDTO>().ReverseMap();
         CreateMap<OTPResponseDto, SaveOTPRequestDto>().ReverseMap();
         CreateMap<VerifyOTPRequestDto, CreateTokenRequestDto>().ReverseMap();
-        CreateMap<VerifyEmailRequestDto, GenerateOTPRequestDto>().ReverseMap();
         CreateMap<RegisterRequestDto, GenerateOTPRequestDto>().ReverseMap();
         CreateMap<RegisterRequestDto, VerifyOTPRequestDto>().ReverseMap();
     }

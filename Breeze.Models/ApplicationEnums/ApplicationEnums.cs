@@ -6,7 +6,6 @@ public enum ResponseEnums
     UserLoginSuccessfully,
     VerificationCodeSent,
     PasswordChangedSuccessfully,
-    EmailVerifiedSuccessfully,
     ProfileUpdatedSuccessfully,
 
     //Failure

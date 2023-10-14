@@ -23,10 +23,9 @@ public struct ApiStatusCodes
     public const short PASSWORD_CHANGED = 204;
     public const short RECORD_FOUND = 205;
     public const short REQUEST_COMPLETED_SUCCESSFULLY = 206;
-    public const short EMAIL_VERIFIED = 207;
-    public const short PROFILE_UPDATED_SUCCESSFULLY = 208;
-    public const short WELCOME_MESSAGE = 209;
-    public const short WELCOME_BACK_MESSAGE = 210;
+    public const short PROFILE_UPDATED_SUCCESSFULLY = 207;
+    public const short WELCOME_MESSAGE = 208;
+    public const short WELCOME_BACK_MESSAGE = 209;
 }
 
 public struct ApiResponseMessages
@@ -47,7 +46,6 @@ public struct ApiResponseMessages
     public const string RECORD_NOT_FOUND = "Record not found.";
     public const string USER_DOES_NOT_EXIST = "User does not exist.";
     public const string REQUEST_COMPLETED_SUCCESSFULLY = "Request completed successfully.";
-    public const string EMAIL_VERIFIED = "Email verified.";
     public const string PROFILE_UPDATED_SUCCESSFULLY = "Profile updated successfully.";
     public const string WELCOME_MESSAGE = "Welcome, ";
     public const string WELCOME_BACK_MESSAGE = "Welcome back, ";

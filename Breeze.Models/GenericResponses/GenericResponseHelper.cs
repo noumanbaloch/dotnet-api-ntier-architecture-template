@@ -9,7 +9,6 @@ public static class GenericResponseHelper
         return result switch
         {
             //Success
-            ResponseEnums.EmailVerifiedSuccessfully => GenericResponse.Success(ApiResponseMessages.EMAIL_VERIFIED, ApiStatusCodes.EMAIL_VERIFIED),
             ResponseEnums.VerificationCodeSent => GenericResponse.Success(ApiResponseMessages.VERIFICATION_CODE_SENT, ApiStatusCodes.VERIFICATION_CODE_SENT),
 
             //Failure

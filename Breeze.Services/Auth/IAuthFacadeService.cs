@@ -11,7 +11,6 @@ namespace Breeze.Services.Auth
         Task<GenericResponse<UserResponseDto>> ChangePassword(ChangePasswordRequestDto requestDto);
         Task<GenericResponse<UserResponseDto>> ForgotPassword(ForgotPasswordRequestDto requestDto);
         Task<GenericResponse<bool>> CheckForUserExists(string userName);
-        Task<GenericResponse> VerifyEmail(VerifyEmailRequestDto requestDto);
         Task<GenericResponse<UserResponseDto>> UpdateProfile(UpdateProfileRequestDto requestDto);
     }
 }
