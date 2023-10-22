@@ -114,8 +114,7 @@ public class AuthFacadeService : IAuthFacadeService
 
     public async Task<GenericResponse<UserResponseDto>> ForgotPassword(ForgotPasswordRequestDto requestDto)
     {
-        var user = await _authService.GetUserByUsername(requestDto.UserName);
-        if (user is null || !await _authService.UserExists(requestDto.UserName))
+        if (!await _authService.UserExists(requestDto.UserName))
         {
             return GenericResponse<UserResponseDto>.Failure(ApiResponseMessages.INVALID_USERNAME_OR_PASSWORD, ApiStatusCodes.INVALID_USERNAME_OR_PASSWORD);
         }
@@ -137,7 +136,7 @@ public class AuthFacadeService : IAuthFacadeService
             return GenericResponse<UserResponseDto>.Failure(ApiResponseMessages.INVALID_VERIFICATION_CODE, ApiStatusCodes.INVALID_VERIFICATION_CODE);
         }
 
-        var result = await _authService.ForgotPassword(user, requestDto.NewPassword);
+        var result = await _authService.ForgotPassword(requestDto);
 
         if (result.Item1 == ResponseEnums.UserLoginSuccessfully)
         {

@@ -88,7 +88,7 @@ public class AuthService : IAuthService
 
         var token = _tokenService.GenerateToken(user.ToCreateTokenRequesDto(roles.ToList()));
 
-        return (ResponseEnums.InvalidVerificationCode, user.ToUserResponseDto(token));
+        return (ResponseEnums.UserLoginSuccessfully, user.ToUserResponseDto(token));
     }
 
     public async Task<(ResponseEnums, UserResponseDto?)> ChangePassword(ChangePasswordRequestDto requestDto)
@@ -127,9 +127,15 @@ public class AuthService : IAuthService
         return (ResponseEnums.PasswordChangedSuccessfully, user.ToUserResponseDto(token));
     }
 
-    public async Task<(ResponseEnums, UserResponseDto?)> ForgotPassword(UserEntity user, string newPassword)
+    public async Task<(ResponseEnums, UserResponseDto?)> ForgotPassword(ForgotPasswordRequestDto requestDto)
     {
-        await ChangeUserPassword(user, newPassword);
+        var user = await _userManager.FindByNameAsync(requestDto.UserName);
+        if (user is null || !await UserExists(requestDto.UserName))
+        {
+            return (ResponseEnums.InvalidUsernamePassword, null);
+        }
+
+        await ChangeUserPassword(user, requestDto.NewPassword);
 
         var roles = await _userManager.GetRolesAsync(user);
 
@@ -223,7 +229,7 @@ public class AuthService : IAuthService
         x.Deleted == false);
 
 
-    public async Task<UserEntity?> CheckForValidUserNamePassword(string userName, string Password)
+    public async Task<UserEntity?> CheckForValidUserNamePassword(string userName, string password)
     {
         var user = await _userManager.FindByNameAsync(userName);
         if (user is null || !await UserExists(userName))
@@ -231,7 +237,7 @@ public class AuthService : IAuthService
             return null;
         }
 
-        var signInResult = await _signInManager.CheckPasswordSignInAsync(user, userName, false);
+        var signInResult = await _signInManager.CheckPasswordSignInAsync(user, password, false);
 
         if (!signInResult.Succeeded)
         {

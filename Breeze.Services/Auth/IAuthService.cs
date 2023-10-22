@@ -9,7 +9,7 @@ public interface IAuthService
     Task<(ResponseEnums, UserResponseDto?)> Register(RegisterRequestDto requestDto);
     Task<(ResponseEnums, UserResponseDto?)> Login(UserEntity user);
     Task<(ResponseEnums, UserResponseDto?)> ChangePassword(ChangePasswordRequestDto requestDto);
-    Task<(ResponseEnums, UserResponseDto?)> ForgotPassword(UserEntity user, string newPassword);
+    Task<(ResponseEnums, UserResponseDto?)> ForgotPassword(ForgotPasswordRequestDto requestDto);
     Task<(ResponseEnums, UserResponseDto?)> UpdateProfile(UpdateProfileRequestDto requestDto);
     Task UpdateDevice(string userName);
     Task<bool> UserExists(string userName);
