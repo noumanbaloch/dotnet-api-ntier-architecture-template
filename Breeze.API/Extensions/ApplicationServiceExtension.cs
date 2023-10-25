@@ -8,6 +8,7 @@ using Breeze.Services.ClaimResolver;
 using Breeze.Services.DropDown;
 using Breeze.Services.Email;
 using Breeze.Services.HttpHeader;
+using Breeze.Services.Logging;
 using Breeze.Services.MemoryCache;
 using Breeze.Services.OTP;
 using Breeze.Services.ParamBuilder;
@@ -40,6 +41,8 @@ public static class ApplicationServiceExtension
 
         services.AddScoped<IOTPFacadeService, OTPFacadeService>();
         services.AddScoped<IOTPService, OTPService>();
+
+        services.AddScoped<ILoggingService, LoggingService>();
 
         services.AddSingleton<ICacheService, CacheService>();
         services.AddMemoryCache();

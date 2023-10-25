@@ -25,6 +25,7 @@ public struct TableNames
     public const string COLLEGES_TABLE = "colleges";
     public const string OTP_CODES_TABLE = "otp_codes";
     public const string BOARD_DETAILS_TABLE = "board_details";
+    public const string LOG_ENTRY_ERROR_TABLE = "log_entry_error";
 }
 
 public struct DbColumnNames
@@ -51,6 +52,15 @@ public struct DbColumnNames
     public const string BOARD_ID = "board_id";
     public const string BOARD_NAME = "board_name";
     public const string COLLEGE_ID = "college_id";
+    public const string EXCEPTION = "exception";
+    public const string MESSAGE = "message";
+    public const string STATUS_CODE = "status_code";
+    public const string STACK_TRACE = "stack_trace";
+    public const string USER_DESCRIPTION = "user_description";
+    public const string REQUEST_METHOD = "request_method";
+    public const string REQUEST_PATH = "request_path";
+    public const string REQUEST_HEADERS = "request_headers";
+    public const string SOURCE = "source";
 }
 
 public struct UserRoles

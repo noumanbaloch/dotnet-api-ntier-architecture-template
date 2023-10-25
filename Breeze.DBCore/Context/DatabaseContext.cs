@@ -21,4 +21,5 @@ public class DatabaseContext : IdentityDbContext<IdentityUser<int>, IdentityRole
     public DbSet<BoardDetailEntity> BoardEntities { get; set; }
     public DbSet<OTPCodeEntity> OTPCodeEntities { get; set; }
     public DbSet<CollegeEntity> CollegeEntities { get; set; }
+    public DbSet<LogEntryErrorEntity> LogEntryErrorEntities { get; set; }
 }
