@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http.Extensions;
 using System.Net;
 
 namespace Breeze.Services.Logging;
-public class LoggingService : ILoggingService
+public class LoggingService : ILoggingService 
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IClaimResolverService _claimResolverService;
@@ -33,7 +33,7 @@ public class LoggingService : ILoggingService
             StackTrace = ex.StackTrace ?? string.Empty,
             StatusCode = (int)HttpStatusCode.InternalServerError,
             Source = ex.Source ?? string.Empty,
-            UserDescription = @$"{_claimResolverService.GetUserId()} - {_claimResolverService.GetLoggedInUsername()}",
+            UserDescription = @$"{_claimResolverService.GetUserId()}",
             CreatedBy = !string.IsNullOrWhiteSpace(_claimResolverService.GetLoggedInUsername()) ? _claimResolverService.GetLoggedInUsername()! : Usernames.SYSTEM_USERNAME,
             CreatedDate = Helper.GetCurrentDate()
         };
