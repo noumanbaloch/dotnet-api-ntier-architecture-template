@@ -59,6 +59,7 @@ public struct ExceptionMessages
     public const string ERROR_UPDATING_ROW_VERSION = "Error updating RowVersion property.";
     public const string FILE_NOT_FOUND = "File not found";
     public const string FAILED_TO_START_API = "Error while creating and building generic host builder object";
+    public const string UNAUTHORIZED_USER = "User is not authenticated.";
 }
 
 public struct RequestValidationMessages

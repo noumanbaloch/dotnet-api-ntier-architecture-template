@@ -2,7 +2,9 @@
 namespace Breeze.Services.MemoryCache;
 public interface IMemoryCacheService
 {
-    T Get<T>(string key);
-    void Set<T>(string key, T value);
-    void Remove(string key);
+    T? Get<T>(string cachedKey);
+    void Set<T>(string cachedKey, T value);
+    void Remove(string cachedKey);
+    void Remove(IEnumerable<string> cachedKeys);
+    IEnumerable<string> GetKeysContain(string pattern);
 }

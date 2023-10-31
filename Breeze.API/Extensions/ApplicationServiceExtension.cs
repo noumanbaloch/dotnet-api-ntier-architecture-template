@@ -44,8 +44,9 @@ public static class ApplicationServiceExtension
 
         services.AddScoped<ILoggingService, LoggingService>();
 
-        services.AddSingleton<ICacheService, CacheService>();
-        services.AddMemoryCache();
+        services.AddLazyCache();
+        services.AddSingleton<IMemoryCacheService, MemoryCacheService>();
+
         services.AddScoped<IMemoryCacheService, MemoryCacheService>();
 
         services.AddScoped<ISubjectFacadeService, SubjectFacadeService>();

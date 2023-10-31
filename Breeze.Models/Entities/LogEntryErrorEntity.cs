@@ -1,11 +1,16 @@
 ﻿using Breeze.Models.Constants;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Breeze.Models.Entities
 {
-    [Table(TableNames.LOG_ENTRY_ERROR_TABLE)]
+    [Table(TableNames.LOG_ENTRY_ERRORS_TABLE)]
     public class LogEntryErrorEntity : BaseEntity
     {
+        [Key]
+        [Column(DbColumnNames.ID)]
+        public int Id { get; set; }
+
         [Column(DbColumnNames.EXCEPTION)]
         public string Exception { get; set; } = string.Empty;
 
@@ -19,7 +24,7 @@ namespace Breeze.Models.Entities
         public string StackTrace { get; set; } = string.Empty;
 
         [Column(DbColumnNames.USER_DESCRIPTION)]
-        public string UserDescription { get; set; } = string.Empty;
+        public string? UserDescription { get; set; }
 
         [Column(DbColumnNames.REQUEST_METHOD)]
         public string RequestMethod { get; set; } = string.Empty;

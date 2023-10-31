@@ -1,36 +1,70 @@
 ﻿using Breeze.Utilities;
+using LazyCache;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace Breeze.Services.MemoryCache;
+
 public class MemoryCacheService : IMemoryCacheService
 {
-    private readonly IMemoryCache _cache;
+    private readonly IAppCache _cache;
+    private List<string> _cachedKeys = new();
 
-    public MemoryCacheService(IMemoryCache cache)
+    public MemoryCacheService(IAppCache cache)
     {
         _cache = cache;
     }
 
-    public T Get<T>(string key)
+    public T? Get<T>(string cachedKey)
     {
-        if (_cache.TryGetValue(key, out var value) && value is T)
+        if (_cache.TryGetValue(cachedKey, out T value))
         {
-            return (T)value;
+            return value;
         }
 
-        return default!;
+        return default;
     }
 
-    public void Set<T>(string key, T value)
+    public void Set<T>(string cachedKey, T value)
     {
-        _cache.Set(key, value, new MemoryCacheEntryOptions
+        _cache.Add(cachedKey, value, GetDefaultCacheEntryOptions());
+        _cachedKeys.Add(cachedKey);
+    }
+
+    public void Remove(string cachedKey)
+    {
+        _cache.Remove(cachedKey);
+        _cachedKeys.Remove(cachedKey);
+    }
+
+    public void Remove(IEnumerable<string> cachedKeys)
+    {
+        var cachedKeysToRemove = cachedKeys.ToList();
+        foreach (var cachedKey in cachedKeysToRemove)
         {
-            AbsoluteExpiration = Helper.GetCurrentDate().AddDays(1)
-        });
+            _cache.Remove(cachedKey);
+            _cachedKeys.Remove(cachedKey);
+        }
     }
 
-    public void Remove(string key)
+    public IEnumerable<string> GetKeysContain(string pattern)
     {
-        _cache.Remove(key);
+        return _cachedKeys.Where(key => key.Contains(pattern));
     }
+
+    #region Private Methods
+
+    private IEnumerable<string> GetAllKeys()
+    {
+        return _cachedKeys;
+    }
+
+    private static MemoryCacheEntryOptions GetDefaultCacheEntryOptions()
+    {
+        return new MemoryCacheEntryOptions
+        {
+            AbsoluteExpiration = Helper.GetCurrentDate().AddDays(1),
+            SlidingExpiration = TimeSpan.FromMinutes(60)
+        };
+    }
+    #endregion
 }

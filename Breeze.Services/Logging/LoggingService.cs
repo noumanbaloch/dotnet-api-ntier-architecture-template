@@ -5,6 +5,7 @@ using Breeze.Services.ClaimResolver;
 using Breeze.Utilities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.Extensions.Logging;
 using System.Net;
 
 namespace Breeze.Services.Logging;
@@ -13,15 +14,26 @@ public class LoggingService : ILoggingService
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IClaimResolverService _claimResolverService;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<LoggingService> _logger;
     public LoggingService(IHttpContextAccessor httpContextAccessor,
         IClaimResolverService claimResolverService,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<LoggingService> logger)
     {
         _httpContextAccessor = httpContextAccessor;
         _claimResolverService = claimResolverService;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
     public async Task LogException(Exception ex)
+    {
+        LogToAzureBlogStorage(ex);
+        await LogToDatabase(ex);
+    }
+
+    #region Private Methods
+
+    private async Task LogToDatabase(Exception ex)
     {
         var entity = new LogEntryErrorEntity()
         {
@@ -33,9 +45,10 @@ public class LoggingService : ILoggingService
             StackTrace = ex.StackTrace ?? string.Empty,
             StatusCode = (int)HttpStatusCode.InternalServerError,
             Source = ex.Source ?? string.Empty,
-            UserDescription = @$"{_claimResolverService.GetUserId()}",
-            CreatedBy = !string.IsNullOrWhiteSpace(_claimResolverService.GetLoggedInUsername()) ? _claimResolverService.GetLoggedInUsername()! : Usernames.SYSTEM_USERNAME,
-            CreatedDate = Helper.GetCurrentDate()
+            UserDescription = _claimResolverService.IsUserAuthenticated() ? $"UserId: {_claimResolverService.GetUserId()} - Username: {_claimResolverService.GetLoggedInUsername()}" : null,
+            CreatedBy = Usernames.SYSTEM_USERNAME,
+            CreatedDate = Helper.GetCurrentDate(),
+
         };
 
         var repo = _unitOfWork.GetRepository<LogEntryErrorEntity>();
@@ -43,17 +56,18 @@ public class LoggingService : ILoggingService
         repo.Add(entity);
 
         await _unitOfWork.CommitAsync();
-    }
 
-    #region Private Methods
+    }
+    private void LogToAzureBlogStorage(Exception ex)
+        => _logger.LogError(ex, message: ex.Message);
+
     private string GetRequestHeaders()
-        => Newtonsoft.Json.JsonConvert.SerializeObject(_httpContextAccessor.HttpContext.Request.Headers);
+        => Newtonsoft.Json.JsonConvert.SerializeObject(_httpContextAccessor.HttpContext!.Request.Headers);
 
     private string GetRequestMethod()
-        => _httpContextAccessor.HttpContext.Request.Method;
+        => _httpContextAccessor.HttpContext!.Request.Method;
 
     private string GetRequestPath()
-        => _httpContextAccessor.HttpContext.Request.GetDisplayUrl();
-
+        => _httpContextAccessor.HttpContext!.Request.GetDisplayUrl();
     #endregion
 }

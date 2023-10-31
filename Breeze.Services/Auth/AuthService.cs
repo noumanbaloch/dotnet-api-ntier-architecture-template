@@ -159,7 +159,7 @@ public class AuthService : IAuthService
             user.UserHandle = $"{requestDto.FirstName.Replace(" ", string.Empty).ToLower()}{requestDto.LastName.Replace(" ", string.Empty).ToLower()}{Helper.GenerateRandomNumber()}";
         }
 
-        user.ModifiedBy = _claimResolverService.GetLoggedInUsername()!;
+        user.ModifiedBy = _claimResolverService.GetLoggedInUsername();
         user.ModifiedDate = Helper.GetCurrentDate();
 
         await _userManager.UpdateAsync(user);

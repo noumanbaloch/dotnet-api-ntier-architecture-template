@@ -12,14 +12,10 @@ public class ExceptionHandlingMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly IWebHostEnvironment _env;
-    private readonly ILogger<ExceptionHandlingMiddleware> _logger;
-    public ExceptionHandlingMiddleware(RequestDelegate next,
-        IWebHostEnvironment env,
-        ILogger<ExceptionHandlingMiddleware> logger)
+    public ExceptionHandlingMiddleware(RequestDelegate next, IWebHostEnvironment env)
     {
         _next = next;
         _env = env;
-        _logger = logger;
     }
 
     public async Task InvokeAsync(HttpContext context,
@@ -31,7 +27,6 @@ public class ExceptionHandlingMiddleware
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, ex.Message);
             await loggingService.LogException(ex);
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;

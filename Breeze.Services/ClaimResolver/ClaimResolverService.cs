@@ -12,19 +12,26 @@ public class ClaimResolverService : IClaimResolverService
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public string? GetLoggedInUsername()
-        => IsUserAuthenticated()
-            ? _httpContextAccessor.HttpContext?.User.FindFirstValue(JWTClaimNames.USER_NAME)
-            : null;
+    public string GetLoggedInUsername()
+        => GetClaimValue(JWTClaimNames.USER_NAME);
 
-    public int? GetUserId()
-      => IsUserAuthenticated()
-          && int.TryParse(_httpContextAccessor.HttpContext?.User.FindFirstValue(JWTClaimNames.USER_ID), out int userId)
-          ? userId
-          : null;
+    public int GetUserId()
+        => Convert.ToInt32(GetClaimValue(JWTClaimNames.USER_ID));
 
-    private bool IsUserAuthenticated()
+    public bool IsUserAuthenticated()
         => _httpContextAccessor.HttpContext?.User?.Identity?.IsAuthenticated == true;
+
+    #region Private Methods
+    private string GetClaimValue(string claimType)
+    {
+        if (!IsUserAuthenticated())
+        {
+            throw new UnauthorizedAccessException(ExceptionMessages.UNAUTHORIZED_USER);
+        }
+
+        return _httpContextAccessor.HttpContext!.User.FindFirstValue(claimType)!;
+    }
+    #endregion
 }
 
 

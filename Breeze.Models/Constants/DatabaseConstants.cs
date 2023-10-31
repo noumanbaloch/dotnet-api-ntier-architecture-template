@@ -25,7 +25,7 @@ public struct TableNames
     public const string COLLEGES_TABLE = "colleges";
     public const string OTP_CODES_TABLE = "otp_codes";
     public const string BOARD_DETAILS_TABLE = "board_details";
-    public const string LOG_ENTRY_ERROR_TABLE = "log_entry_error";
+    public const string LOG_ENTRY_ERRORS_TABLE = "log_entry_errors";
 }
 
 public struct DbColumnNames

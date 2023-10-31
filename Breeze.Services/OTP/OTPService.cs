@@ -94,7 +94,7 @@ public class OTPService : IOTPService
             foreach (var entity in entities)
             {
                 entity.Deleted = true;
-                entity.ModifiedBy = _claimResolverService.GetLoggedInUsername();
+                entity.ModifiedBy = Usernames.SYSTEM_USERNAME;
                 entity.ModifiedDate = Helper.GetCurrentDate();
             }
 
