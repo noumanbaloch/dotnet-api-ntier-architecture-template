@@ -11,14 +11,7 @@ public class HttpHeaderService : IHttpHeaderService
     }
 
     public string GetHeader(string headerName)
-    {
-        if (_httpContextAccessor.HttpContext.Request.Headers.TryGetValue(headerName, out var headerValue))
-        {
-            return headerValue.ToString();
-        }
-        else
-        {
-            return string.Empty;
-        }
-    }
+        => _httpContextAccessor?.HttpContext?.Request.Headers.TryGetValue(headerName, out var headerValue) == true ? 
+        headerValue.ToString() :
+        string.Empty;
 }
