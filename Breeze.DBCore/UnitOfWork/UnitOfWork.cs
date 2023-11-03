@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 
 namespace Breeze.DbCore.UnitOfWork;
 
-public class UnitOfWork : IUnitOfWork
+public class UnitOfWork : IUnitOfWork, IDisposable
 {
     private IDatabaseContext? _dbContext;
     private readonly string _connectionString;
@@ -82,28 +82,28 @@ public class UnitOfWork : IUnitOfWork
         return (await connection.QueryAsync<TEntity>(spName, commandTimeout: _databaseConfiguration.CommandTimeout)).ToList();
     }
 
-    public TEntity DapperSpSingleWithParams<TEntity>(string spName, DynamicParameters parameters)
+    public TEntity? DapperSpSingleWithParams<TEntity>(string spName, DynamicParameters parameters)
     {
         using var connection = new SqlConnection(_connectionString);
         connection.Open();
         return connection.QueryFirstOrDefault<TEntity>(spName, parameters, commandTimeout: _databaseConfiguration.CommandTimeout);
     }
 
-    public TEntity DapperSpSingleWithoutParams<TEntity>(string spName)
+    public TEntity? DapperSpSingleWithoutParams<TEntity>(string spName)
     {
         using var connection = new SqlConnection(_connectionString);
         connection.Open();
         return connection.QueryFirstOrDefault<TEntity>(spName, commandTimeout: _databaseConfiguration.CommandTimeout);
     }
 
-    public async Task<TEntity> DapperSpSingleWithParamsAsync<TEntity>(string spName, DynamicParameters parameters)
+    public async Task<TEntity?> DapperSpSingleWithParamsAsync<TEntity>(string spName, DynamicParameters parameters)
     {
         using var connection = new SqlConnection(_connectionString);
         await connection.OpenAsync().ConfigureAwait(false);
         return await connection.QueryFirstOrDefaultAsync<TEntity>(spName, parameters, commandTimeout: _databaseConfiguration.CommandTimeout);
     }
 
-    public async Task<TEntity> DapperSpSingleWithoutParamsAsync<TEntity>(string spName)
+    public async Task<TEntity?> DapperSpSingleWithoutParamsAsync<TEntity>(string spName)
     {
         using var connection = new SqlConnection(_connectionString);
         await connection.OpenAsync().ConfigureAwait(false);

@@ -10,10 +10,10 @@ public interface IUnitOfWork
     IEnumerable<TEntity> DapperSpListWithoutParams<TEntity>(string spName);
     Task<IEnumerable<TEntity>> DapperSpListWithParamsAsync<TEntity>(string spName, DynamicParameters parameters);
     Task<IEnumerable<TEntity>> DapperSpListWithoutParamsAsync<TEntity>(string spName);
-    TEntity DapperSpSingleWithParams<TEntity>(string spName, DynamicParameters parameters);
-    TEntity DapperSpSingleWithoutParams<TEntity>(string spName);
-    Task<TEntity> DapperSpSingleWithParamsAsync<TEntity>(string spName, DynamicParameters parameters);
-    Task<TEntity> DapperSpSingleWithoutParamsAsync<TEntity>(string spName);
+    TEntity? DapperSpSingleWithParams<TEntity>(string spName, DynamicParameters parameters);
+    TEntity? DapperSpSingleWithoutParams<TEntity>(string spName);
+    Task<TEntity?> DapperSpSingleWithParamsAsync<TEntity>(string spName, DynamicParameters parameters);
+    Task<TEntity?> DapperSpSingleWithoutParamsAsync<TEntity>(string spName);
     int Commit();
     Task<int> CommitAsync();
 }
