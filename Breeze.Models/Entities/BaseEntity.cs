@@ -22,5 +22,5 @@ public class BaseEntity
     public bool Deleted { get; set; } = false;
 
     [Column(DbColumnNames.ROW_VERSION)]
-    public byte[] RowVersion { get; set; } = BitConverter.GetBytes(DateTime.UtcNow.Ticks);
+    public byte[] RowVersion { get; set; } = null!;
 }
