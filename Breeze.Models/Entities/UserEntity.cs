@@ -1,5 +1,6 @@
 ﻿using Breeze.Models.Constants;
 using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Breeze.Models.Entities;
@@ -41,5 +42,6 @@ public class UserEntity : IdentityUser<int>
     public bool Deleted { get; set; } = false;
 
     [Column(DbColumnNames.ROW_VERSION)]
-    public byte[] RowVersion { get; set; } = null!;
+    [Timestamp]
+    public byte[] RowVersion { get; set; } = BitConverter.GetBytes(DateTime.UtcNow.Ticks);
 }
