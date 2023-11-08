@@ -43,5 +43,5 @@ public class UserEntity : IdentityUser<int>
 
     [Column(DbColumnNames.ROW_VERSION)]
     [Timestamp]
-    public byte[] RowVersion { get; set; } = BitConverter.GetBytes(DateTime.UtcNow.Ticks);
+    public byte[] RowVersion { get; set; } = null!;
 }

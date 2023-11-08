@@ -23,5 +23,5 @@ public class BaseEntity
 
     [Column(DbColumnNames.ROW_VERSION)]
     [Timestamp]
-    public byte[] RowVersion { get; set; } = BitConverter.GetBytes(DateTime.UtcNow.Ticks);
+    public byte[] RowVersion { get; set; } =null!;
 }
