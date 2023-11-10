@@ -12,14 +12,14 @@ public class OTPCodeEntity : BaseEntity
     public int Id { get; set; }
 
     [Column(DbColumnNames.USER_NAME)]
-    public string UserName { get; set; } = string.Empty;
+    public string UserName { get; set; } = null!;
 
     [Column(DbColumnNames.OTP_CODE)]
-    public string OTPCode { get; set; } = string.Empty;
+    public string OTPCode { get; set; } = null!;
 
     [Column(DbColumnNames.EXPIRATION_TIME)]
     public DateTime ExpirationTime { get; set; }
 
     [Column(DbColumnNames.OTP_USE_CASE)]
-    public string OTPUseCase { get; set; } = string.Empty;
+    public string OTPUseCase { get; set; } = null!;
 }

@@ -7,7 +7,7 @@ namespace Breeze.Models.Entities;
 public class BaseEntity
 {
     [Column(DbColumnNames.CREATED_BY)]
-    public string CreatedBy { get; set; } = string.Empty;
+    public string CreatedBy { get; set; } = null!;
 
     [Column(DbColumnNames.CREATED_DATE)]
     public DateTime CreatedDate { get; set; }
@@ -19,9 +19,9 @@ public class BaseEntity
     public DateTime? ModifiedDate { get; set; }
 
     [Column(DbColumnNames.DELETED)]
-    public bool Deleted { get; set; } = false;
+    public bool Deleted { get; set; }
 
     [Column(DbColumnNames.ROW_VERSION)]
     [Timestamp]
-    public byte[] RowVersion { get; set; } =null!;
+    public byte[] RowVersion { get; set; } = null!;
 }
