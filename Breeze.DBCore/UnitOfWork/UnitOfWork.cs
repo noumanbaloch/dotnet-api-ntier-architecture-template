@@ -23,7 +23,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         _databaseConfiguration = databaseConfiguration.Value;
     }
 
-    public Dictionary<Type, object> _repos = new();
+    private Dictionary<Type, object> _repos = new();
 
     public IGenericRepository<TEntity> GetRepository<TEntity>() where TEntity : class
     {

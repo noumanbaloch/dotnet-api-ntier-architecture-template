@@ -44,7 +44,7 @@ public class OTPService : IOTPService
             && x.OTPUseCase == verifyOTPRequestDto.OTPUseCase
             && x.OTPCode == OTPCode
             && x.ExpirationTime >= Helper.GetCurrentDate()
-            && x.Deleted == false);
+            && !x.Deleted);
 
         return OTPEntity is not null && ConstantTimeComparison(OTPEntity.OTPCode, OTPCode);
     }
@@ -87,7 +87,7 @@ public class OTPService : IOTPService
     {
         var repo = _unitOfWork.GetRepository<OTPCodeEntity>();
         var entities = await repo.FindByAsync(x => x.UserName!.ToLower() == userName.ToLower()
-        && x.Deleted == false);
+        && !x.Deleted);
 
         if (entities is not null && entities.Any())
         {

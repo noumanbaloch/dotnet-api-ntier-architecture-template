@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System.Text;
 
+namespace Breeze.Utilities;
 public class HttpClientWrapper : IHttpClientWrapper
 {
     private readonly HttpClient _httpClient;

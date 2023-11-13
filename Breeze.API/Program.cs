@@ -2,6 +2,7 @@ using Breeze.API;
 using Breeze.Models.Constants;
 using Serilog;
 
+namespace Breeze.API;
 public class Program
 {
     public static void Main(string[] args)
@@ -36,12 +37,10 @@ public class Program
         try
         {
             CreateHostBuilder(args).Build().Run();
-            return;
         }
         catch (Exception ex)
         {
             Log.Fatal(ex, ExceptionMessages.FAILED_TO_START_API);
-            return;
         }
         finally
         {

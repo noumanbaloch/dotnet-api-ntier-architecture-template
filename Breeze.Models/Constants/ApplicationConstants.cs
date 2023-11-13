@@ -77,7 +77,7 @@ public struct RequestValidationMessages
     public const string OTP_USE_CASE_REQUIRED_MSG = "The OTP use case is required.";
 }
 
-public struct JWTClaimNames
+public struct JwtClaimNames
 {
     public const string USER_ID = "UserId";
     public const string USER_NAME = "UserName";

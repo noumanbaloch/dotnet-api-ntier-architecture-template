@@ -2,10 +2,10 @@
 
 public class GenericResponse<T>
 {
-    public int statusCode;
-    public T? payload;
-    public string? message;
-    public bool status;
+    private int statusCode;
+    private T? payload;
+    private string? message;
+    private bool status;
 
     public static GenericResponse<T> Success(T? payload, string message, short statusCode)
     {
@@ -52,9 +52,9 @@ public class GenericResponse<T>
 
 public class GenericResponse
 {
-    public int statusCode;
-    public string? message;
-    public bool status;
+    private int statusCode;
+    private string? message;
+    private bool status;
 
     public static GenericResponse Success(string message, short statusCode)
     {

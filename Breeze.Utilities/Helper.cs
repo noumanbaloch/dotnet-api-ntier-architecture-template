@@ -26,9 +26,9 @@ public static class Helper
         {
             var addr = new System.Net.Mail.MailAddress(value);
             return addr.Address == value &&
-                addr.Host.Contains(".") &&
-                !addr.Host.StartsWith(".") &&
-                !addr.Host.EndsWith(".");
+                addr.Host.Contains('.') &&
+                !addr.Host.StartsWith('.') &&
+                !addr.Host.EndsWith('.');
         }
         catch
         {

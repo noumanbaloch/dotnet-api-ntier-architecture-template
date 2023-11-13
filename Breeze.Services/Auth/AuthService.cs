@@ -175,7 +175,7 @@ public class AuthService : IAuthService
     {
         var repo = _unitOfWork.GetRepository<UserEntity>();
         var entity = await repo.FindByFirstOrDefaultAsync(x => x.UserName!.ToLower() == userName.ToLower()
-        && x.Deleted == false);
+        && !x.Deleted);
 
         var newDeviceId = _httpHeaderService.GetHeader(PropertyNames.DEVICE_ID).ToString();
         if (entity is not null)
@@ -194,12 +194,12 @@ public class AuthService : IAuthService
 
     public async Task<bool> UserExists(string userName) => await _unitOfWork.GetRepository<UserEntity>()
              .AnyAsync(x => x.UserName!.ToLower() == userName.ToLower()
-             && x.Deleted == false);
+             && !x.Deleted);
 
     public async Task<UserEntity?> GetUserByUsername(string username)
     {
         return await _unitOfWork.GetRepository<UserEntity>().FindByFirstOrDefaultAsync(x => x.UserName!.ToLower() == username.ToLower()
-        && x.Deleted == false);
+        && !x.Deleted);
     }
 
     public async Task<bool> ValidateTrustedDevice(string userName, string deviceId)
@@ -226,7 +226,7 @@ public class AuthService : IAuthService
     public async Task<bool> UserhandleAlreadyExist(string userHandle, string userName)
         => await _unitOfWork.GetRepository<UserEntity>().AnyAsync(x => x.UserHandle == userHandle &&
         x.UserName != userName &&
-        x.Deleted == false);
+        !x.Deleted);
 
 
     public async Task<UserEntity?> CheckForValidUserNamePassword(string userName, string password)

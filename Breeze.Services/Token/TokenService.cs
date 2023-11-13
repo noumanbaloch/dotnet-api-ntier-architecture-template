@@ -25,14 +25,14 @@ public class TokenService : ITokenService
     {
         var claims = new List<Claim>()
             {
-                new Claim(JWTClaimNames.USER_ID, requestDto.Id.ToString()),
-                new Claim(JWTClaimNames.USER_NAME, requestDto.UserName ?? string.Empty),
-                new Claim(JWTClaimNames.FIRST_NAME, requestDto.FirstName ?? string.Empty),
-                new Claim(JWTClaimNames.LAST_NAME, requestDto.LastName ?? string.Empty),
-                new Claim(JWTClaimNames.FULL_NAME, $"{requestDto.FirstName} {requestDto.LastName}"),
-                new Claim(JWTClaimNames.PHONE_NUMBER, requestDto.PhoneNumber ?? string.Empty),
-                new Claim(JWTClaimNames.JTI, Guid.NewGuid().ToString()),
-                new Claim(JWTClaimNames.IAT, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture), ClaimValueTypes.Integer64),
+                new Claim(JwtClaimNames.USER_ID, requestDto.Id.ToString()),
+                new Claim(JwtClaimNames.USER_NAME, requestDto.UserName ?? string.Empty),
+                new Claim(JwtClaimNames.FIRST_NAME, requestDto.FirstName ?? string.Empty),
+                new Claim(JwtClaimNames.LAST_NAME, requestDto.LastName ?? string.Empty),
+                new Claim(JwtClaimNames.FULL_NAME, $"{requestDto.FirstName} {requestDto.LastName}"),
+                new Claim(JwtClaimNames.PHONE_NUMBER, requestDto.PhoneNumber ?? string.Empty),
+                new Claim(JwtClaimNames.JTI, Guid.NewGuid().ToString()),
+                new Claim(JwtClaimNames.IAT, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture), ClaimValueTypes.Integer64),
             };
 
         requestDto.Roles.ForEach(role =>

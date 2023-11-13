@@ -13,10 +13,10 @@ public class ClaimResolverService : IClaimResolverService
     }
 
     public string GetLoggedInUsername()
-        => GetClaimValue(JWTClaimNames.USER_NAME);
+        => GetClaimValue(JwtClaimNames.USER_NAME);
 
     public int GetUserId()
-        => Convert.ToInt32(GetClaimValue(JWTClaimNames.USER_ID));
+        => Convert.ToInt32(GetClaimValue(JwtClaimNames.USER_ID));
 
     public bool IsUserAuthenticated()
         => _httpContextAccessor.HttpContext?.User?.Identity?.IsAuthenticated == true;

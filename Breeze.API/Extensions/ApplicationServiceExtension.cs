@@ -77,7 +77,7 @@ public static class ApplicationServiceExtension
         {
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
         });
-        services.AddScoped<DeviceValidator>();
+        services.AddScoped<DeviceValidatorAttribute>();
         return services;
     }
 }
