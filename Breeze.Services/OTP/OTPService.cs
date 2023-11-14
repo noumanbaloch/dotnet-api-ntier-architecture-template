@@ -43,8 +43,7 @@ public class OTPService : IOTPService
             x.UserName!.ToLower() == verifyOTPRequestDto.UserName.ToLower()
             && x.OTPUseCase == verifyOTPRequestDto.OTPUseCase
             && x.OTPCode == OTPCode
-            && x.ExpirationTime >= Helper.GetCurrentDate()
-            && !x.Deleted);
+            && x.ExpirationTime >= Helper.GetCurrentDate());
 
         return OTPEntity is not null && ConstantTimeComparison(OTPEntity.OTPCode, OTPCode);
     }
@@ -86,8 +85,7 @@ public class OTPService : IOTPService
     public async Task InvalidateExistingOTPs(string userName)
     {
         var repo = _unitOfWork.GetRepository<OTPCodeEntity>();
-        var entities = await repo.FindByAsync(x => x.UserName!.ToLower() == userName.ToLower()
-        && !x.Deleted);
+        var entities = await repo.FindByAsync(x => x.UserName!.ToLower() == userName.ToLower());
 
         if (entities is not null && entities.Any())
         {

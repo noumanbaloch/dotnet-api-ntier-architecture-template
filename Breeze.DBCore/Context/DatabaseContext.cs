@@ -10,11 +10,31 @@ public class DatabaseContext : IdentityDbContext<IdentityUser<int>, IdentityRole
 {
     public DatabaseContext(DbContextOptions options) : base(options) { }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder builder)
     {
-        base.OnModelCreating(modelBuilder);
+        base.OnModelCreating(builder);
 
-        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        builder
+       .Entity<UserEntity>()
+       .HasQueryFilter(e => !e.Deleted);
+
+        builder
+       .Entity<BoardDetailEntity>()
+       .HasQueryFilter(e => !e.Deleted);
+
+        builder
+       .Entity<OTPCodeEntity>()
+       .HasQueryFilter(e => !e.Deleted);
+
+        builder
+       .Entity<CollegeEntity>()
+       .HasQueryFilter(e => !e.Deleted);
+
+        builder
+        .Entity<LogEntryErrorEntity>()
+        .HasQueryFilter(e => !e.Deleted);
+
+        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 
     public DbSet<UserEntity> UserEntities { get; set; }

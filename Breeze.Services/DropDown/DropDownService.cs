@@ -43,7 +43,7 @@ public class DropDownService : IDropDownService
     private async Task<IEnumerable<DropDownResponseDto>?> GetDropDown<TEntity>() where TEntity : BaseEntity
     {
         var result = await _unitOfWork.GetRepository<TEntity>()
-            .FindByNoTrackingAsync(x => !x.Deleted);
+            .GetAllNoTrackingAsync();
 
         var dropDownResponseDto = _mapper.Map<IEnumerable<DropDownResponseDto>>(result);
 

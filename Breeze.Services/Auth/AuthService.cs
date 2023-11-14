@@ -174,8 +174,7 @@ public class AuthService : IAuthService
     public async Task UpdateDevice(string userName)
     {
         var repo = _unitOfWork.GetRepository<UserEntity>();
-        var entity = await repo.FindByFirstOrDefaultAsync(x => x.UserName!.ToLower() == userName.ToLower()
-        && !x.Deleted);
+        var entity = await repo.FindByFirstOrDefaultAsync(x => x.UserName!.ToLower() == userName.ToLower());
 
         var newDeviceId = _httpHeaderService.GetHeader(PropertyNames.DEVICE_ID).ToString();
         if (entity is not null)
@@ -193,13 +192,11 @@ public class AuthService : IAuthService
     }
 
     public async Task<bool> UserExists(string userName) => await _unitOfWork.GetRepository<UserEntity>()
-             .AnyAsync(x => x.UserName!.ToLower() == userName.ToLower()
-             && !x.Deleted);
+             .AnyAsync(x => x.UserName!.ToLower() == userName.ToLower());
 
     public async Task<UserEntity?> GetUserByUsername(string username)
     {
-        return await _unitOfWork.GetRepository<UserEntity>().FindByFirstOrDefaultAsync(x => x.UserName!.ToLower() == username.ToLower()
-        && !x.Deleted);
+        return await _unitOfWork.GetRepository<UserEntity>().FindByFirstOrDefaultAsync(x => x.UserName!.ToLower() == username.ToLower());
     }
 
     public async Task<bool> ValidateTrustedDevice(string userName, string deviceId)
@@ -214,7 +211,7 @@ public class AuthService : IAuthService
                 return false;
             }
 
-            if (_cacheService.Exists(cacheKey) == false)
+            if (!_cacheService.Exists(cacheKey))
             {
                 _cacheService.SetData(cacheKey, user.TrustedDeviceId);
             }
@@ -225,8 +222,7 @@ public class AuthService : IAuthService
 
     public async Task<bool> UserhandleAlreadyExist(string userHandle, string userName)
         => await _unitOfWork.GetRepository<UserEntity>().AnyAsync(x => x.UserHandle == userHandle &&
-        x.UserName != userName &&
-        !x.Deleted);
+        x.UserName != userName);
 
 
     public async Task<UserEntity?> CheckForValidUserNamePassword(string userName, string password)
