@@ -12,5 +12,5 @@ public class CollegeEntity : BaseEntity
     public int Id { get; set; }
 
     [Column(DbColumnNames.COLLEGE_NAME)]
-    public string CollegeName { get; set; } = null!;
+    public required string CollegeName { get; set; }
 }

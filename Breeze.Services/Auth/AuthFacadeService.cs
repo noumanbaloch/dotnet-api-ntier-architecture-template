@@ -42,7 +42,7 @@ public class AuthFacadeService : IAuthFacadeService
             await _otpService.InvalidateExistingOTPs(requestDto.UserName);
             var otpResponseDto = _otpService.GenerateOTP(_mapper.Map<GenerateOTPRequestDto>(requestDto));
             await _otpService.SaveOTP(_mapper.Map<SaveOTPRequestDto>(otpResponseDto));
-            await _otpService.SendOTPEmail(_mapper.Map<OTPEmailRequestDTO>(otpResponseDto));
+            await _otpService.SendOTPEmail(_mapper.Map<OTPEmailRequestDto>(otpResponseDto));
             return GenericResponse<UserResponseDto>.Success(ApiResponseMessages.VERIFICATION_CODE_SENT, ApiStatusCodes.VERIFICATION_CODE_SENT);
         }
 
@@ -77,7 +77,7 @@ public class AuthFacadeService : IAuthFacadeService
             await _otpService.InvalidateExistingOTPs(requestDto.UserName);
             var otpResponseDto = _otpService.GenerateOTP(_mapper.Map<GenerateOTPRequestDto>(requestDto));
             await _otpService.SaveOTP(_mapper.Map<SaveOTPRequestDto>(otpResponseDto));
-            await _otpService.SendOTPEmail(_mapper.Map<OTPEmailRequestDTO>(otpResponseDto));
+            await _otpService.SendOTPEmail(_mapper.Map<OTPEmailRequestDto>(otpResponseDto));
             return GenericResponse<UserResponseDto>.Success(ApiResponseMessages.VERIFICATION_CODE_SENT, ApiStatusCodes.VERIFICATION_CODE_SENT);
         }
         if (!deviceIdIsTrusted && !await _otpService.IsValideOTP(_mapper.Map<VerifyOTPRequestDto>(requestDto)))
@@ -124,7 +124,7 @@ public class AuthFacadeService : IAuthFacadeService
             await _otpService.InvalidateExistingOTPs(requestDto.UserName);
             var otpResponseDto = _otpService.GenerateOTP(_mapper.Map<GenerateOTPRequestDto>(requestDto));
             await _otpService.SaveOTP(_mapper.Map<SaveOTPRequestDto>(otpResponseDto));
-            await _otpService.SendOTPEmail(_mapper.Map<OTPEmailRequestDTO>(otpResponseDto));
+            await _otpService.SendOTPEmail(_mapper.Map<OTPEmailRequestDto>(otpResponseDto));
 
             return GenericResponse<UserResponseDto>.Success(ApiResponseMessages.VERIFICATION_CODE_SENT, ApiStatusCodes.VERIFICATION_CODE_SENT);
         }

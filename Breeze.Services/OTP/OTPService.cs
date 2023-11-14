@@ -48,9 +48,9 @@ public class OTPService : IOTPService
         return OTPEntity is not null && ConstantTimeComparison(OTPEntity.OTPCode, OTPCode);
     }
 
-    public async Task SendOTPEmail(OTPEmailRequestDTO emailOTPRequestDto)
+    public async Task SendOTPEmail(OTPEmailRequestDto emailOTPRequestDto)
     {
-        var emailRequestDto = new EmailRequestDto<OTPEmailRequestDTO>()
+        var emailRequestDto = new EmailRequestDto<OTPEmailRequestDto>()
         {
             Subject = EmailSubjects.VERIFICATION_CODE_EMAIL,
             To = emailOTPRequestDto.UserName,

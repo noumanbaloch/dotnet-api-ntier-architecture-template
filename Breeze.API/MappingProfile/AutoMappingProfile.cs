@@ -27,7 +27,7 @@ public class AutoMappingProfile : Profile
         CreateMap<LoginRequestDto, VerifyOTPRequestDto>().ReverseMap();
         CreateMap<ForgotPasswordRequestDto, GenerateOTPRequestDto>().ReverseMap();
         CreateMap<ForgotPasswordRequestDto, VerifyOTPRequestDto>().ReverseMap();
-        CreateMap<OTPResponseDto, OTPEmailRequestDTO>().ReverseMap();
+        CreateMap<OTPResponseDto, OTPEmailRequestDto>().ReverseMap();
         CreateMap<OTPResponseDto, SaveOTPRequestDto>().ReverseMap();
         CreateMap<VerifyOTPRequestDto, CreateTokenRequestDto>().ReverseMap();
         CreateMap<RegisterRequestDto, GenerateOTPRequestDto>().ReverseMap();

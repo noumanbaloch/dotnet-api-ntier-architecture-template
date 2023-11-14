@@ -7,11 +7,11 @@ namespace Breeze.Models.Dtos.OTP.Request;
 public class VerifyOTPRequestDto
 {
     [Required(ErrorMessage = RequestValidationMessages.USERNAME_REQUIRED_MSG)]
-    public string UserName { get; set; } = string.Empty;
+    public required string UserName { get; set; }
 
     [Required(ErrorMessage = RequestValidationMessages.OTP_CODE_REQUIRED_MSG)]
-    public string OTPCode { get; set; } = string.Empty;
+    public required string OTPCode { get; set; }
 
     [Required]
-    public string OTPUseCase { get; set; } = string.Empty;
+    public required string OTPUseCase { get; set; }
 }

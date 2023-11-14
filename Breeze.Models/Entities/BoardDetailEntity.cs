@@ -12,5 +12,5 @@ public class BoardDetailEntity : BaseEntity
     public int Id { get; set; }
 
     [Column(DbColumnNames.BOARD_NAME)]
-    public string BoardName { get; set; } = null!;
+    public required string BoardName { get; set; }
 }

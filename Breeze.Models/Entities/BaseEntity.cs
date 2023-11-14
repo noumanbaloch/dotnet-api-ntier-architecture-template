@@ -7,7 +7,7 @@ namespace Breeze.Models.Entities;
 public class BaseEntity
 {
     [Column(DbColumnNames.CREATED_BY)]
-    public string CreatedBy { get; set; } = null!;
+    public required string CreatedBy { get; set; }
 
     [Column(DbColumnNames.CREATED_DATE)]
     public DateTime CreatedDate { get; set; }

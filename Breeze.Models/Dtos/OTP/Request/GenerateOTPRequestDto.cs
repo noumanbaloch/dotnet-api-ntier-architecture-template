@@ -5,8 +5,8 @@ namespace Breeze.Models.Dtos.OTP.Request;
 public class GenerateOTPRequestDto
 {
     [Required(ErrorMessage = RequestValidationMessages.USERNAME_REQUIRED_MSG)]
-    public string UserName { get; set; } = string.Empty;
+    public required string UserName { get; set; }
 
     [Required]
-    public string OTPUseCase { get; set; } = string.Empty;
+    public required string OTPUseCase { get; set; }
 }

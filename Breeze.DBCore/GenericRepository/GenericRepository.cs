@@ -8,13 +8,11 @@ namespace Breeze.DbCore.GenericRepository;
 
 public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
 {
-    private readonly IDatabaseContext _dbContext;
     private readonly DbSet<TEntity> _dbSet;
 
     public GenericRepository(IDatabaseContext dbContext)
     {
-        _dbContext = dbContext;
-        _dbSet = _dbContext.Set<TEntity>();
+        _dbSet = dbContext.Set<TEntity>();
     }
 
     public void Add(TEntity entity)

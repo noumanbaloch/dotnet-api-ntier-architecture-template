@@ -5,20 +5,20 @@ namespace Breeze.Models.Dtos.Auth.Request;
 public class RegisterRequestDto
 {
     [Required(ErrorMessage = RequestValidationMessages.FIRST_NAME_REQUIRED_MSG)]
-    public string FirstName { get; set; } = string.Empty;
+    public required string FirstName { get; set; }
 
     [Required(ErrorMessage = RequestValidationMessages.LAST_NAME_REQUIRED_MSG)]
-    public string LastName { get; set; } = string.Empty;
+    public required string LastName { get; set; }
 
     [Required(ErrorMessage = RequestValidationMessages.USERNAME_REQUIRED_MSG)]
     [RegularExpression(@"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,6}$", ErrorMessage = RequestValidationMessages.VALID_EMAIL_ADDRESS_REQUIRED_MSG)]
-    public string UserName { get; set; } = string.Empty;
+    public required string UserName { get; set; }
 
     [Required(ErrorMessage = RequestValidationMessages.PASSWORD_REQUIRED_MSG)]
-    public string Password { get; set; } = string.Empty;
+    public required string Password { get; set; }
 
     [Required(ErrorMessage = RequestValidationMessages.PHONE_NUMBER_REQUIRED_MSG)]
-    public string PhoneNumber { get; set; } = string.Empty;
+    public required string PhoneNumber { get; set; }
 
     public int DisciplineId { get; set; }
 
@@ -26,9 +26,9 @@ public class RegisterRequestDto
     [Range(typeof(bool), "true", "true", ErrorMessage = RequestValidationMessages.ACCEPTED_TERMS_AND_CONDITIONS_REQUIRED_MSG)]
     public bool AcceptedTermsAndConditions { get; set; }
 
-    public string OTPCode { get; set; } = string.Empty;
+    public required string OTPCode { get; set; }
 
     [Required(ErrorMessage = RequestValidationMessages.OTP_USE_CASE_REQUIRED_MSG)]
-    public string OTPUseCase { get; set; } = string.Empty;
+    public required string OTPUseCase { get; set; }
 
 }

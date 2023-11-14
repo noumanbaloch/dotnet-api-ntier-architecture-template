@@ -12,30 +12,30 @@ namespace Breeze.Models.Entities
         public int Id { get; set; }
 
         [Column(DbColumnNames.EXCEPTION)]
-        public string Exception { get; set; } = null!;
+        public required string Exception { get; set; }
 
         [Column(DbColumnNames.MESSAGE)]
-        public string Message { get; set; } =  null!;
+        public required string Message { get; set; }
 
         [Column(DbColumnNames.STATUS_CODE)]
         public int StatusCode { get; set; }
 
         [Column(DbColumnNames.STACK_TRACE)]
-        public string StackTrace { get; set; } = null!;
+        public required string StackTrace { get; set; }
 
         [Column(DbColumnNames.USER_DESCRIPTION)]
         public string? UserDescription { get; set; }
 
         [Column(DbColumnNames.REQUEST_METHOD)]
-        public string RequestMethod { get; set; } = null!;
+        public required string RequestMethod { get; set; }
 
         [Column(DbColumnNames.REQUEST_PATH)]
-        public string RequestPath { get; set; } = null!;
+        public required string RequestPath { get; set; }
 
         [Column(DbColumnNames.REQUEST_HEADERS)]
-        public string RequestHeaders { get; set; } = null!;
+        public required string RequestHeaders { get; set; }
 
         [Column(DbColumnNames.SOURCE)]
-        public string Source { get; set; } = null!;
+        public required string Source { get; set; }
     }
 }

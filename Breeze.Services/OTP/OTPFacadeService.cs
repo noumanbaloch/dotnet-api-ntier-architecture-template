@@ -29,7 +29,7 @@ public class OTPFacadeService : IOTPFacadeService
     {
         var otpResponseDto = _otpService.GenerateOTP(requestDto);
         await _otpService.SaveOTP(_mapper.Map<SaveOTPRequestDto>(otpResponseDto));
-        await _otpService.SendOTPEmail(_mapper.Map<OTPEmailRequestDTO>(otpResponseDto));
+        await _otpService.SendOTPEmail(_mapper.Map<OTPEmailRequestDto>(otpResponseDto));
         return GenericResponse<bool>.Success(true, ApiResponseMessages.VERIFICATION_CODE_SENT, ApiStatusCodes.VERIFICATION_CODE_SENT);
     }
 

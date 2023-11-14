@@ -6,7 +6,7 @@ namespace Breeze.Services.OTP;
 public interface IOTPService
 {
     Task<bool> IsValideOTP(VerifyOTPRequestDto verifyOtpRequestDto);
-    Task SendOTPEmail(OTPEmailRequestDTO emailOtpRequestDto);
+    Task SendOTPEmail(OTPEmailRequestDto emailOtpRequestDto);
     Task SaveOTP(SaveOTPRequestDto saveOtpResponseDto);
     OTPResponseDto GenerateOTP(GenerateOTPRequestDto genOtpRequestDto);
     Task InvalidateExistingOTPs(string userName);

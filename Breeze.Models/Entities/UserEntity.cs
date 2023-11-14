@@ -9,25 +9,25 @@ namespace Breeze.Models.Entities;
 public class UserEntity : IdentityUser<int>
 {
     [Column(DbColumnNames.FIRST_NAME)]
-    public string FirstName { get; set; } = null!;
+    public required string FirstName { get; set; }
 
     [Column(DbColumnNames.LAST_NAME)]
-    public string LastName { get; set; } = null!;
+    public required string LastName { get; set; }
 
     [Column(DbColumnNames.GENDER)]
     public string? Gender { get; set; }
 
     [Column(DbColumnNames.USER_HANDLE)]
-    public string UserHandle { get; set; } = null!;
+    public required string UserHandle { get; set; }
 
     [Column(DbColumnNames.TRUSTED_DEVICE_ID)]
-    public string TrustedDeviceId { get; set; } = null!;
+    public required string TrustedDeviceId { get; set; }
 
     [Column(DbColumnNames.ACCEPTED_TERMS_AND_CONDITIONS)]
     public bool AcceptedTermsAndConditions { get; set; }
 
     [Column(DbColumnNames.CREATED_BY)]
-    public string CreatedBy { get; set; } = null!;
+    public required string CreatedBy { get; set; }
 
     [Column(DbColumnNames.CREATED_DATE)]
     public DateTime CreatedDate { get; set; }

@@ -2,14 +2,14 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace Breeze.Models.Dtos.Email.Request;
-public class OTPEmailRequestDTO
+public class OTPEmailRequestDto
 {
     [Required(ErrorMessage = RequestValidationMessages.USERNAME_REQUIRED_MSG)]
-    public string UserName { get; set; } = string.Empty;
+    public required string UserName { get; set; }
 
     [Required]
-    public string OTPCode { get; set; } = string.Empty;
+    public required string OTPCode { get; set; }
 
     [Required]
-    public string OTPUseCase { get; set; } = string.Empty;
+    public required string OTPUseCase { get; set; }
 }

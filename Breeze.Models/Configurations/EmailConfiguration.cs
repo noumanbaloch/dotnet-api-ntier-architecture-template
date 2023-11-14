@@ -1,13 +1,13 @@
 ﻿namespace Breeze.Models.Configurations;
 public class EmailConfiguration
 {
-    public string Server { get; set; } = string.Empty;
+    public required string Server { get; set; }
     public int Port { get; set; }
-    public string Username { get; set; } = string.Empty;
-    public string Password { get; set; } = string.Empty;
+    public required string Username { get; set; }
+    public required string Password { get; set; }
     public bool EnableSsl { get; set; }
     public bool UseDefaultCredentials { get; set; }
-    public string From { get; set; } = string.Empty;
-    public string BrandName { get; set; } = string.Empty;
-    public string TemplateDirectory { get; set; } = string.Empty;
+    public required string From { get; set; }
+    public required string BrandName { get; set; }
+    public required string TemplateDirectory { get; set; }
 }

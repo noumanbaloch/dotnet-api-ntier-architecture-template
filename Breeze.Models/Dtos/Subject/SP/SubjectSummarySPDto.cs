@@ -2,5 +2,5 @@
 public class SubjectSummarySPDto
 {
     public int SubjectId { get; set; }
-    public string SubjectName { get; set; } = string.Empty;
+    public required string SubjectName { get; set; }
 }
