@@ -7,24 +7,11 @@ using Breeze.Services.Auth;
 using Breeze.Services.HttpHeader;
 
 namespace Breeze.Services.OTP;
-public class OTPFacadeService : IOTPFacadeService
+public class OTPFacadeService(IOTPService _otpService,
+    IAuthService _authService,
+    IHttpHeaderService _httpHeaderService,
+    IMapper _mapper) : IOTPFacadeService
 {
-    private readonly IOTPService _otpService;
-    private readonly IAuthService _authService;
-    private readonly IHttpHeaderService _httpHeaderService;
-    private readonly IMapper _mapper;
-
-    public OTPFacadeService(IOTPService otpService,
-        IAuthService authService,
-        IHttpHeaderService httpHeaderService,
-        IMapper mapper)
-    {
-        _otpService = otpService;
-        _authService = authService;
-        _httpHeaderService = httpHeaderService;
-        _mapper = mapper;
-    }
-
     public async Task<GenericResponse<bool>> GenerateOTP(GenerateOTPRequestDto requestDto)
     {
         var otpResponseDto = _otpService.GenerateOTP(requestDto);

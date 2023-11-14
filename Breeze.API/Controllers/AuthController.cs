@@ -5,15 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Breeze.API.Controllers;
 
-public class AuthController : BaseApiController
+public class AuthController(IAuthFacadeService _authService) : BaseApiController
 {
-    private readonly IAuthFacadeService _authService;
-
-    public AuthController(IAuthFacadeService authService)
-    {
-        _authService = authService;
-    }
-
     [HttpPost]
     [AllowAnonymous]
     public async Task<IActionResult> Register([FromBody] RegisterRequestDto requestDto)

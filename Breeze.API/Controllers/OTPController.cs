@@ -4,15 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Breeze.API.Controllers;
-public class OTPController : BaseApiController
+public class OTPController(IOTPFacadeService _OTPFacadeService) : BaseApiController
 {
-    private readonly IOTPFacadeService _OTPFacadeService;
-
-    public OTPController(IOTPFacadeService OTPFacadeService)
-    {
-        _OTPFacadeService = OTPFacadeService;
-    }
-
     [HttpPost]
     [AllowAnonymous]
     public async Task<IActionResult> GenerateOTP([FromBody] GenerateOTPRequestDto requestDto)

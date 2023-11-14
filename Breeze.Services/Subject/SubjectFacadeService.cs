@@ -3,15 +3,8 @@ using Breeze.Models.Dtos.Subject.SP;
 using Breeze.Models.GenericResponses;
 
 namespace Breeze.Services.Subject;
-public class SubjectFacadeService : ISubjectFacadeService
+public class SubjectFacadeService(ISubjectService _subjectService) : ISubjectFacadeService
 {
-    private readonly ISubjectService _subjectService;
-
-    public SubjectFacadeService(ISubjectService subjectService)
-    {
-        _subjectService = subjectService;
-    }
-
     public async Task<GenericResponse<IEnumerable<SubjectSummarySPDto>>> GetSubjectSummary(int subjectId)
     {
         var result = await _subjectService.GetSubjectSummary(subjectId);

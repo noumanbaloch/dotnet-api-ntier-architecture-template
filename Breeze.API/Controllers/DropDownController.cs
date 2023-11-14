@@ -4,15 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Breeze.API.Controllers;
 
-public class DropDownController : BaseApiController
+public class DropDownController(IDropDownService _dropDownService) : BaseApiController
 {
-    private readonly IDropDownService _dropDownService;
-
-    public DropDownController(IDropDownService dropDownService)
-    {
-        _dropDownService = dropDownService;
-    }
-
     [HttpGet]
     [AllowAnonymous]
     public async Task<IActionResult> GetBoardDetailsDropDown()

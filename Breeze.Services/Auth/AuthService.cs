@@ -15,36 +15,15 @@ using Microsoft.AspNetCore.Identity;
 using System.Transactions;
 
 namespace Breeze.Services.Auth;
-public class AuthService : IAuthService
-{
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IMapper _mapper;
-    private readonly IHttpHeaderService _httpHeaderService;
-    private readonly ICacheService _cacheService;
-    private readonly SignInManager<UserEntity> _signInManager;
-    private readonly UserManager<UserEntity> _userManager;
-    private readonly IClaimResolverService _claimResolverService;
-    private readonly ITokenService _tokenService;
-
-    public AuthService(IUnitOfWork unitOfWork,
-        IHttpHeaderService httpHeaderService,
-        IMapper mapper,
-        ICacheService cacheService,
-        SignInManager<UserEntity> signInManager,
-        UserManager<UserEntity> userManager,
-        IClaimResolverService claimResolverService,
-        ITokenService tokenService)
-    {
-        _unitOfWork = unitOfWork;
-        _httpHeaderService = httpHeaderService;
-        _mapper = mapper;
-        _cacheService = cacheService;
-        _signInManager = signInManager;
-        _userManager = userManager;
-        _claimResolverService = claimResolverService;
-        _tokenService = tokenService;
-    }
-
+public class AuthService(IUnitOfWork _unitOfWork,
+    IHttpHeaderService _httpHeaderService,
+    IMapper _mapper,
+    ICacheService _cacheService,
+    SignInManager<UserEntity> _signInManager,
+    UserManager<UserEntity> _userManager,
+    IClaimResolverService _claimResolverService,
+    ITokenService _tokenService) : IAuthService
+{ 
     public async Task<(ResponseEnums, UserResponseDto?)> Register(RegisterRequestDto requestDto)
     {
         using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))

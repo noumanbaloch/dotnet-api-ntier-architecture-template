@@ -3,14 +3,8 @@ using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
 namespace Breeze.Services.ClaimResolver;
-public class ClaimResolverService : IClaimResolverService
+public class ClaimResolverService(IHttpContextAccessor _httpContextAccessor) : IClaimResolverService
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
-
-    public ClaimResolverService(IHttpContextAccessor httpContextAccessor)
-    {
-        _httpContextAccessor = httpContextAccessor;
-    }
 
     public string GetLoggedInUsername()
         => GetClaimValue(JwtClaimNames.USER_NAME);

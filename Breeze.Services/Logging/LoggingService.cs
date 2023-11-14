@@ -9,22 +9,11 @@ using Microsoft.Extensions.Logging;
 using System.Net;
 
 namespace Breeze.Services.Logging;
-public class LoggingService : ILoggingService 
+public class LoggingService(IHttpContextAccessor _httpContextAccessor,
+    IClaimResolverService _claimResolverService,
+    IUnitOfWork _unitOfWork,
+    ILogger<LoggingService> _logger) : ILoggingService 
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly IClaimResolverService _claimResolverService;
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly ILogger<LoggingService> _logger;
-    public LoggingService(IHttpContextAccessor httpContextAccessor,
-        IClaimResolverService claimResolverService,
-        IUnitOfWork unitOfWork,
-        ILogger<LoggingService> logger)
-    {
-        _httpContextAccessor = httpContextAccessor;
-        _claimResolverService = claimResolverService;
-        _unitOfWork = unitOfWork;
-        _logger = logger;
-    }
     public async Task LogException(Exception ex)
     {
         LogToAzureBlogStorage(ex);
