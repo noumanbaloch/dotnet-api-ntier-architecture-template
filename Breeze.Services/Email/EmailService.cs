@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Options;
-using Breeze.Models.Configurations;
+﻿using Breeze.Models.Configurations;
 using Breeze.Models.Constants;
 using Breeze.Models.Dtos.Email.Request;
+using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Mail;
 
@@ -33,7 +33,7 @@ public class EmailService : IEmailService
                 message.Subject = emailRequestDto.Subject;
                 message.Body = body;
                 message.IsBodyHtml = true;
-               
+
                 await client.SendMailAsync(message);
             }
         }

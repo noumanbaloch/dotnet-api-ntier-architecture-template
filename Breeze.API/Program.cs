@@ -1,9 +1,8 @@
-using Breeze.API;
 using Breeze.Models.Constants;
 using Serilog;
 
 namespace Breeze.API;
-public class Program
+public static class Program
 {
     public static void Main(string[] args)
     {

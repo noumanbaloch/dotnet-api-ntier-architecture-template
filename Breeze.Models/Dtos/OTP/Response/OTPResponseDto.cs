@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Breeze.Models.Dtos.OTP.Response;
+﻿namespace Breeze.Models.Dtos.OTP.Response;
 public class OTPResponseDto
 {
     public required string UserName { get; set; }
