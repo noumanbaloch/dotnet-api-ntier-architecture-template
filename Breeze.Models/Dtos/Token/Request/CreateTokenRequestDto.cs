@@ -8,5 +8,5 @@ public class CreateTokenRequestDto
     public required string PhoneNumber { get; set; }
     public int StudentId { get; set; }
     public int DisciplineId { get; set; }
-    public required List<string> Roles { get; set; }
+    public List<string> Roles { get; set; } = new List<string>();
 }

@@ -2,19 +2,19 @@
 
 public class GenericResponse<T>
 {
-    private int statusCode;
-    private T? payload;
-    private string? message;
-    private bool status;
+    public int StatusCode { get; set; }
+    public T? Payload { get; set; }
+    public string? Message { get; set; }
+    public bool Status { get; set; }
 
     public static GenericResponse<T> Success(T? payload, string message, short statusCode)
     {
         return new GenericResponse<T>()
         {
-            payload = payload,
-            status = true,
-            message = message,
-            statusCode = statusCode
+            Payload = payload,
+            Status = true,
+            Message = message,
+            StatusCode = statusCode
         };
     }
 
@@ -22,9 +22,9 @@ public class GenericResponse<T>
     {
         return new GenericResponse<T>()
         {
-            status = true,
-            message = message,
-            statusCode = statusCode
+            Status = true,
+            Message = message,
+            StatusCode = statusCode
         };
     }
 
@@ -32,10 +32,10 @@ public class GenericResponse<T>
     {
         return new GenericResponse<T>()
         {
-            payload = payload,
-            status = false,
-            message = message,
-            statusCode = statusCode
+            Payload = payload,
+            Status = false,
+            Message = message,
+            StatusCode = statusCode
         };
     }
 
@@ -43,26 +43,26 @@ public class GenericResponse<T>
     {
         return new GenericResponse<T>()
         {
-            status = false,
-            message = message,
-            statusCode = statusCode
+            Status = false,
+            Message = message,
+            StatusCode = statusCode
         };
     }
 }
 
 public class GenericResponse
 {
-    private int statusCode;
-    private string? message;
-    private bool status;
+    public int StatusCode { get; set; }
+    public string? Message { get; set; }
+    public bool Status { get; set; }
 
     public static GenericResponse Success(string message, short statusCode)
     {
         return new GenericResponse()
         {
-            status = true,
-            message = message,
-            statusCode = statusCode
+            Status = true,
+            Message = message,
+            StatusCode = statusCode
         };
     }
 
@@ -70,9 +70,9 @@ public class GenericResponse
     {
         return new GenericResponse()
         {
-            status = false,
-            message = message,
-            statusCode = statusCode
+            Status = false,
+            Message = message,
+            StatusCode = statusCode
         };
     }
 }

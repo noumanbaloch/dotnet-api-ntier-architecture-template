@@ -13,8 +13,7 @@ public static class EntityToDtoMappingExtensions
             UserName = user.UserName!,
             FirstName = user.FirstName,
             LastName = user.LastName,
-            Token = token,
-            PhotoUrl = string.Empty
+            Token = token
         };
     }
 
