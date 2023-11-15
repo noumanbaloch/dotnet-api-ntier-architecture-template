@@ -15,10 +15,6 @@ public class DatabaseContext : IdentityDbContext<IdentityUser<int>, IdentityRole
         base.OnModelCreating(builder);
 
         builder
-       .Entity<UserEntity>()
-       .HasQueryFilter(e => !e.Deleted);
-
-        builder
        .Entity<BoardDetailEntity>()
        .HasQueryFilter(e => !e.Deleted);
 

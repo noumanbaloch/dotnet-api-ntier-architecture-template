@@ -153,7 +153,8 @@ public class AuthService(IUnitOfWork _unitOfWork,
     public async Task UpdateDevice(string userName)
     {
         var repo = _unitOfWork.GetRepository<UserEntity>();
-        var entity = await repo.FindByFirstOrDefaultAsync(x => x.UserName!.ToLower() == userName.ToLower());
+        var entity = await repo.FindByFirstOrDefaultAsync(x => x.UserName!.ToLower() == userName.ToLower() &&
+        !x.Deleted);
 
         var newDeviceId = _httpHeaderService.GetHeader(PropertyNames.DEVICE_ID).ToString();
         if (entity is not null)
@@ -171,11 +172,13 @@ public class AuthService(IUnitOfWork _unitOfWork,
     }
 
     public async Task<bool> UserExists(string userName) => await _unitOfWork.GetRepository<UserEntity>()
-             .AnyAsync(x => x.UserName!.ToLower() == userName.ToLower());
+             .AnyAsync(x => x.UserName!.ToLower() == userName.ToLower() &&
+             !x.Deleted);
 
-    public async Task<UserEntity?> GetUserByUsername(string username)
+    public async Task<UserEntity?> GetUserByUsername(string userName)
     {
-        return await _unitOfWork.GetRepository<UserEntity>().FindByFirstOrDefaultAsync(x => x.UserName!.ToLower() == username.ToLower());
+        return await _unitOfWork.GetRepository<UserEntity>().FindByFirstOrDefaultAsync(x => x.UserName!.ToLower() == userName.ToLower() &&
+        !x.Deleted);
     }
 
     public async Task<bool> ValidateTrustedDevice(string userName, string deviceId)
@@ -201,7 +204,8 @@ public class AuthService(IUnitOfWork _unitOfWork,
 
     public async Task<bool> UserhandleAlreadyExist(string userHandle, string userName)
         => await _unitOfWork.GetRepository<UserEntity>().AnyAsync(x => x.UserHandle == userHandle &&
-        x.UserName != userName);
+        x.UserName != userName &&
+        !x.Deleted);
 
 
     public async Task<UserEntity?> CheckForValidUserNamePassword(string userName, string password)
