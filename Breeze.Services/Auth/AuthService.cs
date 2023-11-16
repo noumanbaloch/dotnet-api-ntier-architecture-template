@@ -177,7 +177,7 @@ public class AuthService(IUnitOfWork _unitOfWork,
 
     public async Task<UserEntity?> GetUserByUsername(string userName)
     {
-        return await _unitOfWork.GetRepository<UserEntity>().FindByFirstOrDefaultAsync(x => x.UserName!.ToLower() == userName.ToLower() &&
+        return await _unitOfWork.GetRepository<UserEntity>().FindByFirstOrDefaultAsync(x => x.UserName!.Equals(userName, StringComparison.CurrentCultureIgnoreCase) &&
         !x.Deleted);
     }
 
