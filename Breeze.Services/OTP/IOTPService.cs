@@ -5,10 +5,10 @@ using Breeze.Models.Dtos.OTP.Response;
 namespace Breeze.Services.OTP;
 public interface IOTPService
 {
-    Task<bool> IsValideOTP(VerifyOTPRequestDto verifyOtpRequestDto);
-    Task SendOTPEmail(OTPEmailRequestDto emailOtpRequestDto);
-    Task SaveOTP(SaveOTPRequestDto saveOtpResponseDto);
-    OTPResponseDto GenerateOTP(GenerateOTPRequestDto genOtpRequestDto);
+    Task<bool> IsValideOTP(VerifyOTPRequestDto requestDto);
+    Task SendOTPEmail(OTPEmailRequestDto requestDto);
+    Task SaveOTP(SaveOTPRequestDto requestDto);
+    OTPResponseDto GenerateOTP(GenerateOTPRequestDto requestDto);
     Task InvalidateExistingOTPs(string userName);
 }
 

@@ -31,8 +31,9 @@ public class ExceptionHandlingMiddleware
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
+            var payload = ex.InnerException != null ? ex.InnerException.ToString() : string.Empty;
             var response = _env.IsDevelopment() || _env.IsQA() ?
-                GenericResponse<string>.Failure(ex.InnerException != null ? ex.InnerException.ToString() : string.Empty, ex.Message, (int)HttpStatusCode.InternalServerError) :
+                GenericResponse<string>.Failure(payload, ex.Message, (int)HttpStatusCode.InternalServerError) :
                 GenericResponse<string>.Failure(ApiResponseMessages.SOMETHING_WENT_WRONG, (int)HttpStatusCode.InternalServerError);
 
             var settings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };

@@ -33,35 +33,33 @@ public class OTPService : IOTPService
         _claimResolverService = claimResolverService;
     }
 
-    public async Task<bool> IsValideOTP(VerifyOTPRequestDto verifyOTPRequestDto)
+    public async Task<bool> IsValideOTP(VerifyOTPRequestDto requestDto)
     {
-        var OTPCode = Helper.ComputeHmacSha512Hash(verifyOTPRequestDto.OTPCode.ToString(), _hashingConfiguration.HashingKey);
+        var OTPCode = Helper.ComputeHmacSha512Hash(requestDto.OTPCode.ToString(), _hashingConfiguration.HashingKey);
 
         var OTPRepo = _unitOfWork.GetRepository<OTPCodeEntity>();
 
         var OTPEntity = await OTPRepo.FindByFirstOrDefaultNoTrackingAsync(x =>
-            x.UserName!.ToLower() == verifyOTPRequestDto.UserName.ToLower()
-            && x.OTPUseCase == verifyOTPRequestDto.OTPUseCase
+            x.UserName!.ToLower() == requestDto.UserName.ToLower()
+            && x.OTPUseCase == requestDto.OTPUseCase
             && x.OTPCode == OTPCode
             && x.ExpirationTime >= Helper.GetCurrentDate());
 
         return OTPEntity is not null && ConstantTimeComparison(OTPEntity.OTPCode, OTPCode);
     }
 
-    public async Task SendOTPEmail(OTPEmailRequestDto emailOTPRequestDto)
+    public async Task SendOTPEmail(OTPEmailRequestDto requestDto)
     {
-        var emailRequestDto = new EmailRequestDto<OTPEmailRequestDto>()
+        await _emailService.SendEmailAsync(new EmailRequestDto<OTPEmailRequestDto>()
         {
             Subject = EmailSubjects.VERIFICATION_CODE_EMAIL,
-            To = emailOTPRequestDto.UserName,
-            TemplateName = _emailService.GetOTPEmailTemplateBasedOnUseCase(emailOTPRequestDto.OTPUseCase),
-            Data = emailOTPRequestDto
-        };
-
-        await _emailService.SendEmailAsync(emailRequestDto);
+            To = requestDto.UserName,
+            TemplateName = _emailService.GetOTPEmailTemplateBasedOnUseCase(requestDto.OTPUseCase),
+            Data = requestDto
+        });
     }
 
-    public OTPResponseDto GenerateOTP(GenerateOTPRequestDto genOtpRequestDto)
+    public OTPResponseDto GenerateOTP(GenerateOTPRequestDto requestDto)
     {
         byte[] secretKey = new byte[32];
         using (var randomNumberGenerator = RandomNumberGenerator.Create())
@@ -71,12 +69,12 @@ public class OTPService : IOTPService
         var totp = new Totp(secretKey, step: 30, mode: OtpHashMode.Sha256, totpSize: MagicNumbers.OTP_LENGTH);
         var otp = totp.ComputeTotp();
 
-        return genOtpRequestDto.ToOTPResponseDto(otp);
+        return requestDto.ToOTPResponseDto(otp);
     }
 
-    public async Task SaveOTP(SaveOTPRequestDto reqeustDto)
+    public async Task SaveOTP(SaveOTPRequestDto requestDto)
     {
-        var entity = reqeustDto.ToOTPCodeEntity(_hashingConfiguration.HashingKey);
+        var entity = requestDto.ToOTPCodeEntity(_hashingConfiguration.HashingKey);
         var repo = _unitOfWork.GetRepository<OTPCodeEntity>();
         await repo.AddAsync(entity);
         await _unitOfWork.CommitAsync();
@@ -85,7 +83,7 @@ public class OTPService : IOTPService
     public async Task InvalidateExistingOTPs(string userName)
     {
         var repo = _unitOfWork.GetRepository<OTPCodeEntity>();
-        var entities = await repo.FindByAsync(x => x.UserName!.ToLower() == userName.ToLower());
+        var entities = await repo.FindByAsync(x => x.UserName!.Equals(userName, StringComparison.CurrentCultureIgnoreCase));
 
         if (entities is not null && entities.Any())
         {
