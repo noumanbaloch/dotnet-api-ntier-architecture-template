@@ -83,7 +83,7 @@ public class OTPService : IOTPService
     public async Task InvalidateExistingOTPs(string userName)
     {
         var repo = _unitOfWork.GetRepository<OTPCodeEntity>();
-        var entities = await repo.FindByAsync(x => x.UserName!.Equals(userName, StringComparison.CurrentCultureIgnoreCase));
+        var entities = await repo.FindByAsync(x => x.UserName!.ToLower() == userName.ToLower());
 
         if (entities is not null && entities.Any())
         {

@@ -153,7 +153,7 @@ public class AuthService(IUnitOfWork _unitOfWork,
     public async Task UpdateDevice(string userName)
     {
         var repo = _unitOfWork.GetRepository<UserEntity>();
-        var entity = await repo.FindByFirstOrDefaultAsync(x => x.UserName!.Equals(userName, StringComparison.CurrentCultureIgnoreCase) &&
+        var entity = await repo.FindByFirstOrDefaultAsync(x => x.UserName!.ToLower() == userName.ToLower() &&
         !x.Deleted);
 
         var newDeviceId = _httpHeaderService.GetHeader(PropertyNames.DEVICE_ID).ToString();
@@ -172,12 +172,12 @@ public class AuthService(IUnitOfWork _unitOfWork,
     }
 
     public async Task<bool> UserExists(string userName) => await _unitOfWork.GetRepository<UserEntity>()
-             .AnyAsync(x => x.UserName!.Equals(userName, StringComparison.CurrentCultureIgnoreCase) &&
+             .AnyAsync(x => x.UserName!.ToLower() == userName.ToLower() &&
              !x.Deleted);
 
     public async Task<UserEntity?> GetUserByUsername(string userName)
     {
-        return await _unitOfWork.GetRepository<UserEntity>().FindByFirstOrDefaultAsync(x => x.UserName!.Equals(userName, StringComparison.CurrentCultureIgnoreCase) &&
+        return await _unitOfWork.GetRepository<UserEntity>().FindByFirstOrDefaultAsync(x => x.UserName!.ToLower() == userName.ToLower() &&
         !x.Deleted);
     }
 
