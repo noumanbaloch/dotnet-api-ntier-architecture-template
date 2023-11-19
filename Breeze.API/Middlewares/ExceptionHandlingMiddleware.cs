@@ -40,7 +40,6 @@ public class ExceptionHandlingMiddleware
             var json = JsonConvert.SerializeObject(response, settings);
 
             await context.Response.WriteAsync(json);
-
         }
     }
 }

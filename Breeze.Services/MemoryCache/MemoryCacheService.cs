@@ -7,7 +7,7 @@ namespace Breeze.Services.MemoryCache;
 public class MemoryCacheService : IMemoryCacheService
 {
     private readonly IAppCache _cache;
-    private List<string> _cachedKeys = new();
+    private List<string> CachedKeys = [];
 
     public MemoryCacheService(IAppCache cache)
     {
@@ -27,13 +27,13 @@ public class MemoryCacheService : IMemoryCacheService
     public void Set<T>(string cachedKey, T value)
     {
         _cache.Add(cachedKey, value, GetDefaultCacheEntryOptions());
-        _cachedKeys.Add(cachedKey);
+        CachedKeys.Add(cachedKey);
     }
 
     public void Remove(string cachedKey)
     {
         _cache.Remove(cachedKey);
-        _cachedKeys.Remove(cachedKey);
+        CachedKeys.Remove(cachedKey);
     }
 
     public void Remove(IEnumerable<string> cachedKeys)
@@ -42,20 +42,20 @@ public class MemoryCacheService : IMemoryCacheService
         foreach (var cachedKey in cachedKeysToRemove)
         {
             _cache.Remove(cachedKey);
-            _cachedKeys.Remove(cachedKey);
+            CachedKeys.Remove(cachedKey);
         }
     }
 
     public IEnumerable<string> GetKeysContain(string pattern)
     {
-        return _cachedKeys.Where(key => key.Contains(pattern));
+        return CachedKeys.Where(key => key.Contains(pattern));
     }
 
     #region Private Methods
 
     private IEnumerable<string> GetAllKeys()
     {
-        return _cachedKeys;
+        return CachedKeys;
     }
 
     private static MemoryCacheEntryOptions GetDefaultCacheEntryOptions()

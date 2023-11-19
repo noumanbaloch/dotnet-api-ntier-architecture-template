@@ -18,9 +18,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Breeze.API.Extensions;
 
-public static class ApplicationServiceExtension
+public static class ApplicationServicesExtension
 {
-    public static IServiceCollection AddApplicationService(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddAutoMapper(typeof(AutoMappingProfile).Assembly);
         services.AddScoped<IUnitOfWork, UnitOfWork>();

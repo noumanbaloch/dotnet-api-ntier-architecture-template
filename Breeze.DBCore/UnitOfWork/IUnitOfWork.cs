@@ -14,6 +14,8 @@ public interface IUnitOfWork
     TEntity? DapperSpSingleWithoutParams<TEntity>(string spName);
     Task<TEntity?> DapperSpSingleWithParamsAsync<TEntity>(string spName, DynamicParameters parameters);
     Task<TEntity?> DapperSpSingleWithoutParamsAsync<TEntity>(string spName);
+    Task DapperSpExecuteWithoutParamsAsync(string spName);
+    Task DapperSpExecuteWithParamsAsync(string spName, DynamicParameters parameters);
     int Commit();
     Task<int> CommitAsync();
 }

@@ -110,6 +110,19 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         return await connection.QueryFirstOrDefaultAsync<TEntity>(spName, commandTimeout: _databaseConfiguration.CommandTimeout);
     }
 
+    public async Task DapperSpExecuteWithoutParamsAsync(string spName)
+    {
+        using var connection = new SqlConnection(_connectionString);
+        await connection.OpenAsync();
+        await connection.ExecuteAsync(spName, commandTimeout: _databaseConfiguration.CommandTimeout);
+    }
+
+    public async Task DapperSpExecuteWithParamsAsync(string spName, DynamicParameters parameters)
+    {
+        using var connection = new SqlConnection(_connectionString);
+        await connection.OpenAsync();
+        await connection.ExecuteAsync(spName, parameters, commandTimeout: _databaseConfiguration.CommandTimeout);
+    }
     protected virtual void Dispose(bool disposing)
     {
         if (!disposed && disposing && _dbContext is not null)

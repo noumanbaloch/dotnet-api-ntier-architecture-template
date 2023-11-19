@@ -43,13 +43,13 @@ public class EmailService : IEmailService
     {
         switch (useCaseName)
         {
-            case OTPUseCases.REGISTER_OTP:
+            case OtpUseCases.REGISTER_OTP:
                 return EmailTemplates.REGISTER_TEMPLATE;
-            case OTPUseCases.LOGIN_OTP:
+            case OtpUseCases.LOGIN_OTP:
                 return EmailTemplates.LOGIN_TEMPLATE;
-            case OTPUseCases.FORGOT_OTP:
+            case OtpUseCases.FORGOT_OTP:
                 return EmailTemplates.FORGOT_PASSWORD_TEMPLATE;
-            case OTPUseCases.VERIFY_EMAIL_OTP:
+            case OtpUseCases.VERIFY_EMAIL_OTP:
                 return EmailTemplates.VERIFY_EMAIL_TEMPLATE;
         }
 

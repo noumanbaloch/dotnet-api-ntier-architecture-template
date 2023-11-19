@@ -73,7 +73,7 @@ public struct CommandConstants
     public const string EXEC_COMMAND = "exec";
 }
 
-public struct OTPUseCases
+public struct OtpUseCases
 {
     public const string REGISTER_OTP = "ROTP";
     public const string LOGIN_OTP = "LOTP";
