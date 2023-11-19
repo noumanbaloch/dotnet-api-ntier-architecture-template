@@ -52,12 +52,6 @@ public class MemoryCacheService : IMemoryCacheService
     }
 
     #region Private Methods
-
-    private IEnumerable<string> GetAllKeys()
-    {
-        return CachedKeys;
-    }
-
     private static MemoryCacheEntryOptions GetDefaultCacheEntryOptions()
     {
         return new MemoryCacheEntryOptions
