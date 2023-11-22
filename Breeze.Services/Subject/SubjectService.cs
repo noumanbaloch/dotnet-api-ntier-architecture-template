@@ -4,9 +4,17 @@ using Breeze.Models.Dtos.Subject.SP;
 using Breeze.Services.ParamBuilder;
 
 namespace Breeze.Services.Subject;
-public class SubjectService(IUnitOfWork _unitOfWork,
-    IParamBuilderService _paramBuilderService) : ISubjectService
+public class SubjectService : ISubjectService
 {
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IParamBuilderService _paramBuilderService;
+    public SubjectService(IUnitOfWork unitOfWork,
+        IParamBuilderService paramBuilderService)
+    {
+        _unitOfWork = unitOfWork;
+        _paramBuilderService = paramBuilderService;
+    }
+
     public async Task<IEnumerable<SubjectSummarySPDto>> GetSubjectSummary(int subjectId)
     {
         var parameters = _paramBuilderService.BuildDynamicParameters(subjectId);

@@ -5,8 +5,15 @@ using System.Data;
 
 namespace Breeze.Services.ParamBuilder;
 
-public class ParamBuilderService(IClaimResolverService _claimResolverService) : IParamBuilderService
+public class ParamBuilderService : IParamBuilderService
 {
+    private readonly IClaimResolverService _claimResolverService;
+
+    public ParamBuilderService(IClaimResolverService claimResolverService)
+    {
+        _claimResolverService = claimResolverService;
+    }
+
     public DynamicParameters BuildDynamicParameters(int? subjectId = null, int? chapterId = null, int? cardTypeId = null)
     {
         DynamicParameters parameters = new();

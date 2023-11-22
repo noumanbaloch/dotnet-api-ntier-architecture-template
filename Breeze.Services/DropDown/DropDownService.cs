@@ -6,9 +6,17 @@ using Breeze.Models.Entities;
 using Breeze.Models.GenericResponses;
 
 namespace Breeze.Services.DropDown;
-public class DropDownService(IUnitOfWork _unitOfWork,
-    IMapper _mapper) : IDropDownService
+public class DropDownService : IDropDownService
 {
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
+
+    public DropDownService(IUnitOfWork unitOfWork,
+        IMapper mapper)
+    {
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
+    }
 
     public async Task<GenericResponse<IEnumerable<DropDownResponseDto>>> GetBoardDetailsDropDown()
     {

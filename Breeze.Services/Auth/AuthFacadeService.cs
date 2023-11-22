@@ -11,11 +11,25 @@ using Breeze.Services.OTP;
 
 namespace Breeze.Services.Auth;
 
-public class AuthFacadeService(IAuthService _authService,
-        IOTPService _otpService,
-        IMapper _mapper,
-        IHttpHeaderService _httpHeaderService) : IAuthFacadeService
-{ 
+public class AuthFacadeService : IAuthFacadeService
+{
+    private readonly IAuthService _authService;
+    private readonly IOTPService _otpService;
+    private readonly IMapper _mapper;
+    private readonly IHttpHeaderService _httpHeaderService;
+
+    public AuthFacadeService(
+        IAuthService authService,
+        IOTPService otpService,
+        IMapper mapper,
+        IHttpHeaderService httpHeaderService)
+    {
+        _authService = authService;
+        _otpService = otpService;
+        _mapper = mapper;
+        _httpHeaderService = httpHeaderService;
+    }
+
     public async Task<GenericResponse<UserResponseDto>> Register(RegisterRequestDto requestDto)
     {
         if (await _authService.UserExists(requestDto.UserName))
