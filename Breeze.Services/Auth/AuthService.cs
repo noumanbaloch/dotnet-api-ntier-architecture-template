@@ -73,7 +73,7 @@ public class AuthService : IAuthService
             }
 
             var roles = await _userManager.GetRolesAsync(user);
-            var token = _tokenService.GenerateToken(user.ToCreateTokenRequesDto(roles.ToList()));
+            var token = _tokenService.GenerateToken(user.ToCreateTokenRequesDto(roles));
 
 
             scope.Complete();
@@ -86,7 +86,7 @@ public class AuthService : IAuthService
     {
         var roles = await _userManager.GetRolesAsync(user);
 
-        var token = _tokenService.GenerateToken(user.ToCreateTokenRequesDto(roles.ToList()));
+        var token = _tokenService.GenerateToken(user.ToCreateTokenRequesDto(roles));
 
         return (ResponseEnums.UserLoginSuccessfully, user.ToUserResponseDto(token));
     }
@@ -122,7 +122,7 @@ public class AuthService : IAuthService
 
         var roles = await _userManager.GetRolesAsync(user);
 
-        var token = _tokenService.GenerateToken(user.ToCreateTokenRequesDto(roles.ToList()));
+        var token = _tokenService.GenerateToken(user.ToCreateTokenRequesDto(roles));
 
         return (ResponseEnums.PasswordChangedSuccessfully, user.ToUserResponseDto(token));
     }
@@ -139,7 +139,7 @@ public class AuthService : IAuthService
 
         var roles = await _userManager.GetRolesAsync(user);
 
-        var token = _tokenService.GenerateToken(user.ToCreateTokenRequesDto(roles.ToList()));
+        var token = _tokenService.GenerateToken(user.ToCreateTokenRequesDto(roles));
 
         return (ResponseEnums.UserLoginSuccessfully, user.ToUserResponseDto(token));
     }
@@ -166,7 +166,7 @@ public class AuthService : IAuthService
 
 
         var roles = await _userManager.GetRolesAsync(user);
-        var token = _tokenService.GenerateToken(user.ToCreateTokenRequesDto(roles.ToList()));
+        var token = _tokenService.GenerateToken(user.ToCreateTokenRequesDto(roles));
 
         return (ResponseEnums.ProfileUpdatedSuccessfully, user.ToUserResponseDto(token));
     }

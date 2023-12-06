@@ -17,7 +17,7 @@ public static class EntityToDtoMappingExtensions
         };
     }
 
-    public static CreateTokenRequestDto ToCreateTokenRequesDto(this UserEntity user, List<string> roles)
+    public static CreateTokenRequestDto ToCreateTokenRequesDto(this UserEntity user, IList<string> roles)
     {
         return new CreateTokenRequestDto
         {

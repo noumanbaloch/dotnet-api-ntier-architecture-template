@@ -25,20 +25,20 @@ public class TokenService : ITokenService
     {
         var claims = new List<Claim>()
             {
-                new Claim(JwtClaimNames.USER_ID, requestDto.Id.ToString()),
-                new Claim(JwtClaimNames.USER_NAME, requestDto.UserName ?? string.Empty),
-                new Claim(JwtClaimNames.FIRST_NAME, requestDto.FirstName ?? string.Empty),
-                new Claim(JwtClaimNames.LAST_NAME, requestDto.LastName ?? string.Empty),
-                new Claim(JwtClaimNames.FULL_NAME, $"{requestDto.FirstName} {requestDto.LastName}"),
-                new Claim(JwtClaimNames.PHONE_NUMBER, requestDto.PhoneNumber ?? string.Empty),
-                new Claim(JwtClaimNames.JTI, Guid.NewGuid().ToString()),
-                new Claim(JwtClaimNames.IAT, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture), ClaimValueTypes.Integer64),
+                new (JwtClaimNames.USER_ID, requestDto.Id.ToString()),
+                new (JwtClaimNames.USER_NAME, requestDto.UserName ?? string.Empty),
+                new (JwtClaimNames.FIRST_NAME, requestDto.FirstName ?? string.Empty),
+                new (JwtClaimNames.LAST_NAME, requestDto.LastName ?? string.Empty),
+                new (JwtClaimNames.FULL_NAME, $"{requestDto.FirstName} {requestDto.LastName}"),
+                new (JwtClaimNames.PHONE_NUMBER, requestDto.PhoneNumber ?? string.Empty),
+                new (JwtClaimNames.JTI, Guid.NewGuid().ToString()),
+                new (JwtClaimNames.IAT, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture), ClaimValueTypes.Integer64),
             };
 
-        requestDto.Roles.ForEach(role =>
+        foreach(var role in requestDto.Roles)
         {
             claims.Add(new Claim(type: ClaimTypes.Role, role));
-        });
+        }
 
         var creds = new SigningCredentials(_key, algorithm: SecurityAlgorithms.HmacSha256);
 
