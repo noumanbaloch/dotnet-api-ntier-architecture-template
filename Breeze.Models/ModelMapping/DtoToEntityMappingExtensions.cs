@@ -9,8 +9,7 @@ namespace Breeze.Models.ModelMapping;
 public static class DtoToEntityMappingExtensions
 {
     public static OTPCodeEntity ToOTPCodeEntity(this SaveOTPRequestDto requestDto, string hashingKey)
-    {
-        return new OTPCodeEntity()
+        => new ()
         {
             UserName = requestDto.UserName,
             OTPCode = Helper.ComputeHmacSha512Hash(requestDto.OTPCode.ToString(), hashingKey),
@@ -19,11 +18,9 @@ public static class DtoToEntityMappingExtensions
             CreatedBy = requestDto.UserName,
             CreatedDate = Helper.GetCurrentDate(),
         };
-    }
 
     public static UserEntity ToUserEntity(this RegisterRequestDto requestDto, string deviceId)
-    {
-        return new UserEntity()
+        => new ()
         {
             FirstName = requestDto.FirstName.Trim(),
             LastName = requestDto.LastName.Trim(),
@@ -37,5 +34,4 @@ public static class DtoToEntityMappingExtensions
             PhoneNumber = requestDto.PhoneNumber,
             EmailConfirmed = true,
         };
-    }
 }

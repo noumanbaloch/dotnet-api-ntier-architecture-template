@@ -23,13 +23,13 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         _databaseConfiguration = databaseConfiguration.Value;
     }
 
-    private Dictionary<Type, object> _repos = new();
+    private Dictionary<Type, object> _repos = [];
 
     public IGenericRepository<TEntity> GetRepository<TEntity>() where TEntity : class
     {
         if (_repos is null)
         {
-            _repos = new Dictionary<Type, object>();
+            _repos = [];
         }
 
         var type = typeof(TEntity);

@@ -5,8 +5,7 @@ namespace Breeze.Models.GenericResponses;
 public static class GenericResponseHelper
 {
     public static GenericResponse GenerateEnumToGenericResponse(ResponseEnums result)
-    {
-        return result switch
+        => result switch
         {
             //Success
             ResponseEnums.VerificationCodeSent => GenericResponse.Success(ApiResponseMessages.VERIFICATION_CODE_SENT, ApiStatusCodes.VERIFICATION_CODE_SENT),
@@ -17,11 +16,9 @@ public static class GenericResponseHelper
 
             _ => GenericResponse.Failure(ApiResponseMessages.SOMETHING_WENT_WRONG, ApiStatusCodes.SOMETHING_WENT_WRONG),
         };
-    }
 
     public static GenericResponse<T> GenerateEnumToGenericResponse<T>(ResponseEnums result, T? payload, string? message = null)
-    {
-        return result switch
+        => result switch
         {
             //Success
             ResponseEnums.VerificationCodeSent => GenericResponse<T>.Success(ApiResponseMessages.VERIFICATION_CODE_SENT, ApiStatusCodes.VERIFICATION_CODE_SENT),
@@ -40,5 +37,4 @@ public static class GenericResponseHelper
             ResponseEnums.UserDoesNotExist => GenericResponse<T>.Failure(ApiResponseMessages.USER_DOES_NOT_EXIST, ApiStatusCodes.USER_DOES_NOT_EXIST),
             _ => GenericResponse<T>.Failure(ApiResponseMessages.SOMETHING_WENT_WRONG, ApiStatusCodes.SOMETHING_WENT_WRONG),
         };
-    }
 }

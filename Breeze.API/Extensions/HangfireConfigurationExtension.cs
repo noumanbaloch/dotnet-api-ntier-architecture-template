@@ -19,6 +19,7 @@ public static class HangfireConfigurationExtension
     }
 
     public static IApplicationBuilder UseHangfire(this IApplicationBuilder app,
+        IWebHostEnvironment env,
         IConfiguration configuration,
         IRecurringJobManager recurringJobManager,
         IServiceProvider serviceProvider)
@@ -27,7 +28,7 @@ public static class HangfireConfigurationExtension
         app.UseHangfireDashboard("/hangfiredashboard", new DashboardOptions
         {
             DashboardTitle = "Hangfire Dashboard",
-            AppPath = "https://localhost:44348/swagger",
+            AppPath = env.IsProduction() ? "https://api.sharkemm.com/" : "https://localhost:44348/swagger/index.html",
             Authorization = new[] {
                 new HangfireCustomBasicAuthenticationFilter
                 {

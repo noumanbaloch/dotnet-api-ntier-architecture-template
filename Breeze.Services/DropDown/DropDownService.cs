@@ -52,7 +52,7 @@ public class DropDownService : IDropDownService
             return dropDownResponseDto;
         }
 
-        return null;
+        return default;
     }
 
 }

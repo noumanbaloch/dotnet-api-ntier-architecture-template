@@ -55,7 +55,7 @@ public class Startup
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPIv8 v1"));
         }
 
-        app.UseHangfire(_configuration, recurringJobManager, serviceProvider);
+        app.UseHangfire(env, _configuration, recurringJobManager, serviceProvider);
 
         app.UseMiddleware<ExceptionHandlingMiddleware>();
         app.UseHttpsRedirection();

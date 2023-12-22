@@ -234,14 +234,14 @@ public class AuthService : IAuthService
         var user = await _userManager.FindByNameAsync(userName);
         if (user is null || !await UserExists(userName))
         {
-            return null;
+            return default;
         }
 
         var signInResult = await _signInManager.CheckPasswordSignInAsync(user, password, false);
 
         if (!signInResult.Succeeded)
         {
-            return null;
+            return default;
         }
 
         return user;

@@ -35,7 +35,7 @@ public class TokenService : ITokenService
                 new (JwtClaimNames.IAT, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture), ClaimValueTypes.Integer64),
             };
 
-        foreach(var role in requestDto.Roles)
+        foreach (var role in requestDto.Roles)
         {
             claims.Add(new Claim(type: ClaimTypes.Role, role));
         }

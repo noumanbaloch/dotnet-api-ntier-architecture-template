@@ -7,19 +7,16 @@ namespace Breeze.Models.ModelMapping;
 public static class EntityToDtoMappingExtensions
 {
     public static UserResponseDto ToUserResponseDto(this UserEntity user, string token)
-    {
-        return new UserResponseDto
+        => new ()
         {
             UserName = user.UserName!,
             FirstName = user.FirstName,
             LastName = user.LastName,
             Token = token
         };
-    }
 
     public static CreateTokenRequestDto ToCreateTokenRequesDto(this UserEntity user, IList<string> roles)
-    {
-        return new CreateTokenRequestDto
+        => new ()
         {
             Id = user.Id,
             FirstName = user.FirstName,
@@ -28,5 +25,4 @@ public static class EntityToDtoMappingExtensions
             PhoneNumber = user.PhoneNumber ?? string.Empty,
             Roles = roles
         };
-    }
 }

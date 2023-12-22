@@ -39,7 +39,7 @@ public class UserEntity : IdentityUser<int>
     public DateTime? ModifiedDate { get; set; }
 
     [Column(DbColumnNames.DELETED)]
-    public bool Deleted { get; set; } = false;
+    public bool Deleted { get; set; }
 
     [Column(DbColumnNames.ROW_VERSION)]
     [Timestamp]
