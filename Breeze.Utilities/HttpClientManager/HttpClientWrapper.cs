@@ -1,8 +1,7 @@
-﻿using Breeze.Utilities.HttpClientManager;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Text;
 
-namespace Breeze.Utilities;
+namespace Breeze.Utilities.HttpClientManager;
 public class HttpClientWrapper : IHttpClientWrapper
 {
     private readonly HttpClient _httpClient;

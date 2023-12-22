@@ -56,7 +56,7 @@ public class MemoryCacheService : IMemoryCacheService
     {
         return new MemoryCacheEntryOptions
         {
-            AbsoluteExpiration = Helper.GetCurrentDate().AddDays(1),
+            AbsoluteExpiration = DateTime.Now.AddDays(1),
             SlidingExpiration = TimeSpan.FromMinutes(60)
         };
     }

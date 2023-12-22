@@ -43,7 +43,7 @@ public class OTPService : IOTPService
             x.UserName!.ToLower() == requestDto.UserName.ToLower()
             && x.OTPUseCase == requestDto.OTPUseCase
             && x.OTPCode == OTPCode
-            && x.ExpirationTime >= Helper.GetCurrentDate());
+            && x.ExpirationTime >= DateTime.Now);
 
         return OTPEntity is not null && ConstantTimeComparison(OTPEntity.OTPCode, OTPCode);
     }
@@ -91,7 +91,7 @@ public class OTPService : IOTPService
             {
                 entity.Deleted = true;
                 entity.ModifiedBy = Usernames.SYSTEM_USERNAME;
-                entity.ModifiedDate = Helper.GetCurrentDate();
+                entity.ModifiedDate = DateTime.Now;
             }
 
             repo.UpdateList(entities);

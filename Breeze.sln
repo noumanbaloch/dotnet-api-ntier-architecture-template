@@ -7,17 +7,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{594D2819-8B1
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{DAF80D6F-4BCA-451B-8D86-FA9C13BA5284}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Breeze.API", "Breeze.API\Breeze.API.csproj", "{DE7FC087-0D11-4ADD-B3BF-30F59F227BD8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Breeze.API", "Breeze.API\Breeze.API.csproj", "{DE7FC087-0D11-4ADD-B3BF-30F59F227BD8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Breeze.UnitTests", "Breeze.UnitTests\Breeze.UnitTests.csproj", "{38DAF71E-2C19-4292-8212-5DF878840DD2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Breeze.UnitTests", "Breeze.UnitTests\Breeze.UnitTests.csproj", "{38DAF71E-2C19-4292-8212-5DF878840DD2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Breeze.DBCore", "Breeze.DBCore\Breeze.DBCore.csproj", "{0DD15D38-43B2-4BB1-B53A-3508F42D5697}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Breeze.DBCore", "Breeze.DBCore\Breeze.DBCore.csproj", "{0DD15D38-43B2-4BB1-B53A-3508F42D5697}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Breeze.Models", "Breeze.Models\Breeze.Models.csproj", "{49AC2845-7751-4571-9C03-DAB5FC347594}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Breeze.Models", "Breeze.Models\Breeze.Models.csproj", "{49AC2845-7751-4571-9C03-DAB5FC347594}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Breeze.Utilities", "Breeze.Utilities\Breeze.Utilities.csproj", "{CFC995B1-F148-4271-A944-A458A7BF90FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Breeze.Utilities", "Breeze.Utilities\Breeze.Utilities.csproj", "{CFC995B1-F148-4271-A944-A458A7BF90FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Breeze.Services", "Breeze.Services\Breeze.Services.csproj", "{0EEBF58A-1262-4E82-839A-46F7B855F6A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Breeze.Services", "Breeze.Services\Breeze.Services.csproj", "{0EEBF58A-1262-4E82-839A-46F7B855F6A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Breeze.Identity", "Breeze.Identity\Breeze.Identity.csproj", "{4653D352-F930-48D6-854C-B7A2D3EB6C77}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +51,10 @@ Global
 		{0EEBF58A-1262-4E82-839A-46F7B855F6A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0EEBF58A-1262-4E82-839A-46F7B855F6A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0EEBF58A-1262-4E82-839A-46F7B855F6A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4653D352-F930-48D6-854C-B7A2D3EB6C77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4653D352-F930-48D6-854C-B7A2D3EB6C77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4653D352-F930-48D6-854C-B7A2D3EB6C77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4653D352-F930-48D6-854C-B7A2D3EB6C77}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +66,7 @@ Global
 		{49AC2845-7751-4571-9C03-DAB5FC347594} = {594D2819-8B11-4988-8ED3-21863B8097A7}
 		{CFC995B1-F148-4271-A944-A458A7BF90FF} = {594D2819-8B11-4988-8ED3-21863B8097A7}
 		{0EEBF58A-1262-4E82-839A-46F7B855F6A2} = {594D2819-8B11-4988-8ED3-21863B8097A7}
+		{4653D352-F930-48D6-854C-B7A2D3EB6C77} = {594D2819-8B11-4988-8ED3-21863B8097A7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {677566FF-8F00-4C51-B17F-CB0B8805E97B}

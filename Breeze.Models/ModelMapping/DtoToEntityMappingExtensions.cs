@@ -13,10 +13,10 @@ public static class DtoToEntityMappingExtensions
         {
             UserName = requestDto.UserName,
             OTPCode = Helper.ComputeHmacSha512Hash(requestDto.OTPCode.ToString(), hashingKey),
-            ExpirationTime = Helper.GetCurrentDate().AddMinutes(MagicNumbers.OTP_EXPIRY_MINUTES),
+            ExpirationTime = DateTime.Now.AddMinutes(MagicNumbers.OTP_EXPIRY_MINUTES),
             OTPUseCase = requestDto.OTPUseCase,
             CreatedBy = requestDto.UserName,
-            CreatedDate = Helper.GetCurrentDate(),
+            CreatedDate = DateTime.Now,
         };
 
     public static UserEntity ToUserEntity(this RegisterRequestDto requestDto, string deviceId)
@@ -29,7 +29,7 @@ public static class DtoToEntityMappingExtensions
             TrustedDeviceId = deviceId,
             AcceptedTermsAndConditions = requestDto.AcceptedTermsAndConditions,
             CreatedBy = requestDto.UserName.Trim(),
-            CreatedDate = Helper.GetCurrentDate(),
+            CreatedDate = DateTime.Now,
             Email = Helper.IsEmail(requestDto.UserName) ? requestDto.UserName.Trim() : null,
             PhoneNumber = requestDto.PhoneNumber,
             EmailConfirmed = true,

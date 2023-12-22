@@ -2,6 +2,7 @@
 using Breeze.API.MappingProfile;
 using Breeze.DbCore.Context;
 using Breeze.DbCore.UnitOfWork;
+using Breeze.Identity;
 using Breeze.Services.Auth;
 using Breeze.Services.Cache;
 using Breeze.Services.ClaimResolver;
@@ -53,6 +54,8 @@ public static class ApplicationServicesExtension
         services.AddScoped<ISubjectService, SubjectService>();
 
         services.AddScoped<IParamBuilderService, ParamBuilderService>();
+
+        services.AddScoped<IIdentityService, IdentityService>();
 
         //string connectionString = configuration.GetSection("AzureBlobStorage:ConnectionString").Value!;
         //services.AddSingleton<IAzureBlobStorageService>(new AzureBlobStorageService(connectionString));

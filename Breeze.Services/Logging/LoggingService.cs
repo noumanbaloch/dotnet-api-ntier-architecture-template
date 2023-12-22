@@ -47,7 +47,7 @@ public class LoggingService : ILoggingService
             Source = ex.Source ?? string.Empty,
             UserDescription = _claimResolverService.IsUserAuthenticated() ? $"UserId: {_claimResolverService.GetUserId()} - Username: {_claimResolverService.GetLoggedInUsername()}" : null,
             CreatedBy = Usernames.SYSTEM_USERNAME,
-            CreatedDate = Helper.GetCurrentDate(),
+            CreatedDate = DateTime.Now,
 
         };
 

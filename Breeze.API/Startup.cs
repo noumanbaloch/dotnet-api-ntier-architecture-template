@@ -23,7 +23,7 @@ public class Startup
             .AddSwaggerConfiguration(env)
             .AddApplicationConfiguration(_configuration)
             .AddIdentityService(_configuration)
-            .AddHangfire(_configuration)
+            //.AddHangfire(_configuration) if you want to add hang fire uncomment this
             .AddControllers()
             .AddNewtonsoftJson(options =>
             {
@@ -44,9 +44,10 @@ public class Startup
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app,
-        IWebHostEnvironment env,
-        IRecurringJobManager recurringJobManager,
-        IServiceProvider serviceProvider)
+        IWebHostEnvironment env
+        //IRecurringJobManager recurringJobManager,
+        //IServiceProvider serviceProvider
+        )
     {
         if (env.IsDevelopment() || env.IsQA())
         {
@@ -55,7 +56,7 @@ public class Startup
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPIv8 v1"));
         }
 
-        app.UseHangfire(env, _configuration, recurringJobManager, serviceProvider);
+        //app.UseHangfire(env, _configuration, recurringJobManager, serviceProvider); if you want to add hang fire uncomment this.
 
         app.UseMiddleware<ExceptionHandlingMiddleware>();
         app.UseHttpsRedirection();

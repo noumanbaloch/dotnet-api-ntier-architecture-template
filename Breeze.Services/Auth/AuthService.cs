@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Breeze.DbCore.UnitOfWork;
+using Breeze.Identity;
 using Breeze.Models.ApplicationEnums;
 using Breeze.Models.Constants;
 using Breeze.Models.Dtos.Auth.Request;
@@ -21,28 +22,25 @@ public class AuthService : IAuthService
     private readonly IMapper _mapper;
     private readonly IHttpHeaderService _httpHeaderService;
     private readonly ICacheService _cacheService;
-    private readonly SignInManager<UserEntity> _signInManager;
-    private readonly UserManager<UserEntity> _userManager;
     private readonly IClaimResolverService _claimResolverService;
     private readonly ITokenService _tokenService;
+    private readonly IIdentityService _identityService;
 
     public AuthService(IUnitOfWork unitOfWork,
         IHttpHeaderService httpHeaderService,
         IMapper mapper,
         ICacheService cacheService,
-        SignInManager<UserEntity> signInManager,
-        UserManager<UserEntity> userManager,
         IClaimResolverService claimResolverService,
-        ITokenService tokenService)
+        ITokenService tokenService,
+        IIdentityService identityService)
     {
         _unitOfWork = unitOfWork;
         _httpHeaderService = httpHeaderService;
         _mapper = mapper;
         _cacheService = cacheService;
-        _signInManager = signInManager;
-        _userManager = userManager;
         _claimResolverService = claimResolverService;
         _tokenService = tokenService;
+        _identityService = identityService;
     }
 
     public async Task<(ResponseEnums, UserResponseDto?)> Register(RegisterRequestDto requestDto)
@@ -56,23 +54,18 @@ public class AuthService : IAuthService
                 user.UserHandle = $"{requestDto.FirstName.Replace(" ", string.Empty).ToLower()}{requestDto.LastName.Replace(" ", string.Empty).ToLower()}{Helper.GenerateRandomNumber()}";
             }
 
-            var userResult = await _userManager.CreateAsync(user, requestDto.Password);
-
-            if (!userResult.Succeeded)
+            if (!await _identityService.CreateUser(user, requestDto.Password))
             {
                 return (ResponseEnums.UnableToCompleteProcess, null);
             }
 
-
-            var assignedRoles = await _userManager.AddToRoleAsync(user, UserRoles.ADMIN_ROLE);
-
-            if (!assignedRoles.Succeeded)
+            if (!await _identityService.AddUserRole(user, UserRoles.ADMIN_ROLE))
             {
-                await _userManager.DeleteAsync(user);
+                await _identityService.DeleteUser(user);
                 return (ResponseEnums.UnableToCompleteProcess, null);
             }
 
-            var roles = await _userManager.GetRolesAsync(user);
+            var roles = await _identityService.GetUserRoles(user);
             var token = _tokenService.GenerateToken(user.ToCreateTokenRequesDto(roles));
 
 
@@ -84,7 +77,7 @@ public class AuthService : IAuthService
 
     public async Task<(ResponseEnums, UserResponseDto?)> Login(UserEntity user)
     {
-        var roles = await _userManager.GetRolesAsync(user);
+        var roles = await _identityService.GetUserRoles(user);
 
         var token = _tokenService.GenerateToken(user.ToCreateTokenRequesDto(roles));
 
@@ -93,34 +86,28 @@ public class AuthService : IAuthService
 
     public async Task<(ResponseEnums, UserResponseDto?)> ChangePassword(ChangePasswordRequestDto requestDto)
     {
-        var user = await _userManager.FindByNameAsync(requestDto.UserName);
+        var user = await _identityService.FindByUserName(requestDto.UserName);
         if (user is null || !await UserExists(requestDto.UserName))
         {
             return (ResponseEnums.InvalidUsernamePassword, null);
         }
 
-        var isValidPassword = await _signInManager.CheckPasswordSignInAsync(user, requestDto.CurrentPassword, false);
-
-        if (!isValidPassword.Succeeded)
+        if (!await _identityService.ValidateUserPassword(user, requestDto.CurrentPassword))
         {
             return (ResponseEnums.InvalidPassword, null);
         }
 
-        IdentityResult changePassword = await ChangeUserPassword(user, requestDto.NewPassword);
-
-        if (!changePassword.Succeeded)
+        if (!await _identityService.ChangeUserPassword(user, requestDto.NewPassword))
         {
             return (ResponseEnums.SomethingWentWrong, null);
         }
 
-        var checkPassword = await _signInManager.CheckPasswordSignInAsync(user, requestDto.NewPassword, false);
-
-        if (!checkPassword.Succeeded)
+        if (!await _identityService.ValidateUserPassword(user, requestDto.NewPassword))
         {
             return (ResponseEnums.InvalidPassword, null);
         }
 
-        var roles = await _userManager.GetRolesAsync(user);
+        var roles = await _identityService.GetUserRoles(user);
 
         var token = _tokenService.GenerateToken(user.ToCreateTokenRequesDto(roles));
 
@@ -129,15 +116,15 @@ public class AuthService : IAuthService
 
     public async Task<(ResponseEnums, UserResponseDto?)> ForgotPassword(ForgotPasswordRequestDto requestDto)
     {
-        var user = await _userManager.FindByNameAsync(requestDto.UserName);
+        var user = await _identityService.FindByUserName(requestDto.UserName);
         if (user is null || !await UserExists(requestDto.UserName))
         {
             return (ResponseEnums.InvalidUsernamePassword, null);
         }
 
-        await ChangeUserPassword(user, requestDto.NewPassword);
+        await _identityService.ChangeUserPassword(user, requestDto.NewPassword);
 
-        var roles = await _userManager.GetRolesAsync(user);
+        var roles = await _identityService.GetUserRoles(user);
 
         var token = _tokenService.GenerateToken(user.ToCreateTokenRequesDto(roles));
 
@@ -146,7 +133,7 @@ public class AuthService : IAuthService
 
     public async Task<(ResponseEnums, UserResponseDto?)> UpdateProfile(UpdateProfileRequestDto requestDto)
     {
-        var user = await _userManager.FindByNameAsync(requestDto.UserName);
+        var user = await _identityService.FindByUserName(requestDto.UserName);
         if (user is null || !await UserExists(requestDto.UserName))
         {
             return (ResponseEnums.UserDoesNotExist, null);
@@ -160,12 +147,12 @@ public class AuthService : IAuthService
         }
 
         user.ModifiedBy = _claimResolverService.GetLoggedInUsername();
-        user.ModifiedDate = Helper.GetCurrentDate();
+        user.ModifiedDate = DateTime.Now;
 
-        await _userManager.UpdateAsync(user);
+        await _identityService.UpdateUser(user);
 
 
-        var roles = await _userManager.GetRolesAsync(user);
+        var roles = await _identityService.GetUserRoles(user);
         var token = _tokenService.GenerateToken(user.ToCreateTokenRequesDto(roles));
 
         return (ResponseEnums.ProfileUpdatedSuccessfully, user.ToUserResponseDto(token));
@@ -185,7 +172,7 @@ public class AuthService : IAuthService
 
             entity.TrustedDeviceId = newDeviceId;
             entity.ModifiedBy = userName;
-            entity.ModifiedDate = Helper.GetCurrentDate();
+            entity.ModifiedDate = DateTime.Now;
             repo.Update(entity);
         }
 
@@ -231,29 +218,17 @@ public class AuthService : IAuthService
 
     public async Task<UserEntity?> CheckForValidUserNamePassword(string userName, string password)
     {
-        var user = await _userManager.FindByNameAsync(userName);
+        var user = await _identityService.FindByUserName(userName);
         if (user is null || !await UserExists(userName))
         {
             return default;
         }
 
-        var signInResult = await _signInManager.CheckPasswordSignInAsync(user, password, false);
-
-        if (!signInResult.Succeeded)
+        if (!await _identityService.ValidateUserPassword(user, password))
         {
             return default;
         }
 
         return user;
     }
-    #region private Methods
-
-    private async Task<IdentityResult> ChangeUserPassword(UserEntity user, string newPassword)
-    {
-        await _signInManager.SignOutAsync();
-        var passwordResetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
-
-        return await _userManager.ResetPasswordAsync(user, passwordResetToken, newPassword);
-    }
-    #endregion
 }

@@ -46,7 +46,7 @@ public class TokenService : ITokenService
                    issuer: _authenticationConfiguration.Issuer,
                    audience: _authenticationConfiguration.Audience,
                    claims: claims,
-                   expires: Helper.GetCurrentDate().AddDays(MagicNumbers.TOKEN_EXPIRY_DAYS),
+                   expires: DateTime.Now.AddDays(MagicNumbers.TOKEN_EXPIRY_DAYS),
                    signingCredentials: creds);
         return new JwtSecurityTokenHandler().WriteToken(token);
 
