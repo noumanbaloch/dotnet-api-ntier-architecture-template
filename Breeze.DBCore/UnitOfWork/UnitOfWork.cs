@@ -42,30 +42,10 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         return (IGenericRepository<TEntity>)_repos[type];
     }
 
-    public int Commit()
-    {
-        if (_dbContext is null) return 0;
-        return _dbContext.SaveChanges();
-    }
-
     public async Task<int> CommitAsync()
     {
         if (_dbContext is null) return 0;
         return await _dbContext.SaveChangesAsync(CancellationToken.None);
-    }
-
-    public IEnumerable<TEntity> DapperSpListWithParams<TEntity>(string spName, DynamicParameters parameters)
-    {
-        using var connection = new SqlConnection(_connectionString);
-        connection.Open();
-        return connection.Query<TEntity>(spName, parameters, commandTimeout: _databaseConfiguration.CommandTimeout).ToList();
-    }
-
-    public IEnumerable<TEntity> DapperSpListWithoutParams<TEntity>(string spName)
-    {
-        using var connection = new SqlConnection(_connectionString);
-        connection.Open();
-        return connection.Query<TEntity>(spName, commandTimeout: _databaseConfiguration.CommandTimeout).ToList();
     }
 
     public async Task<IEnumerable<TEntity>> DapperSpListWithParamsAsync<TEntity>(string spName, DynamicParameters parameters)
@@ -80,20 +60,6 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         using var connection = new SqlConnection(_connectionString);
         await connection.OpenAsync().ConfigureAwait(false);
         return (await connection.QueryAsync<TEntity>(spName, commandTimeout: _databaseConfiguration.CommandTimeout)).ToList();
-    }
-
-    public TEntity? DapperSpSingleWithParams<TEntity>(string spName, DynamicParameters parameters)
-    {
-        using var connection = new SqlConnection(_connectionString);
-        connection.Open();
-        return connection.QueryFirstOrDefault<TEntity>(spName, parameters, commandTimeout: _databaseConfiguration.CommandTimeout);
-    }
-
-    public TEntity? DapperSpSingleWithoutParams<TEntity>(string spName)
-    {
-        using var connection = new SqlConnection(_connectionString);
-        connection.Open();
-        return connection.QueryFirstOrDefault<TEntity>(spName, commandTimeout: _databaseConfiguration.CommandTimeout);
     }
 
     public async Task<TEntity?> DapperSpSingleWithParamsAsync<TEntity>(string spName, DynamicParameters parameters)
