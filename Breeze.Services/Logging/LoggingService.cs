@@ -53,7 +53,7 @@ public class LoggingService : ILoggingService
 
         var repo = _unitOfWork.GetRepository<LogEntryErrorEntity>();
 
-        repo.Add(entity);
+        await repo.AddAsync(entity);
 
         await _unitOfWork.CommitAsync();
 

@@ -10,12 +10,12 @@ namespace Breeze.DbCore.UnitOfWork;
 
 public class UnitOfWork : IUnitOfWork, IDisposable
 {
-    private IDatabaseContext? _dbContext;
+    private IBreezeDbContext? _dbContext;
     private readonly string _connectionString;
     private bool disposed = false;
     private readonly DatabaseConfiguration _databaseConfiguration;
-    public UnitOfWork(IDatabaseContext? dbContext,
-        DatabaseContext dbConnectionContext,
+    public UnitOfWork(IBreezeDbContext? dbContext,
+        BreezeDbContext dbConnectionContext,
         IOptions<DatabaseConfiguration> databaseConfiguration)
     {
         _dbContext = dbContext;
@@ -27,10 +27,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
 
     public IGenericRepository<TEntity> GetRepository<TEntity>() where TEntity : class
     {
-        if (_repos is null)
-        {
-            _repos = [];
-        }
+        _repos ??= [];
 
         var type = typeof(TEntity);
         if (!_repos.ContainsKey(type) && _dbContext is not null)

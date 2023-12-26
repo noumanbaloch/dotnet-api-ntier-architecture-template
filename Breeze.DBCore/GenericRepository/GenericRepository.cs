@@ -8,7 +8,7 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
 {
     private readonly DbSet<TEntity> _dbSet;
 
-    public GenericRepository(IDatabaseContext dbContext)
+    public GenericRepository(IBreezeDbContext dbContext)
     {
         _dbSet = dbContext.Set<TEntity>();
     }
@@ -62,16 +62,16 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
 
     public async Task<TEntity?> FindByFirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
     {
-        return await _dbSet.Where(predicate).FirstOrDefaultAsync()!;
+        return await _dbSet.FirstOrDefaultAsync(predicate);
     }
 
     public async Task<TEntity?> FindByFirstOrDefaultNoTrackingAsync(Expression<Func<TEntity, bool>> predicate)
     {
-        return await _dbSet.AsNoTracking().Where(predicate).FirstOrDefaultAsync();
+        return await _dbSet.AsNoTracking().FirstOrDefaultAsync(predicate);
     }
 
     public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate)
     {
-        return await _dbSet.AsNoTracking().Where(predicate).AnyAsync();
+        return await _dbSet.AsNoTracking().AnyAsync(predicate);
     }
 }

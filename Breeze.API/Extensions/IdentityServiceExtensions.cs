@@ -20,7 +20,7 @@ public static class IdentityServiceExtensions
             option.Password.RequiredLength = 6;
             option.Password.RequiredUniqueChars = 0;
 
-        }).AddEntityFrameworkStores<DatabaseContext>().AddDefaultTokenProviders();
+        }).AddEntityFrameworkStores<BreezeDbContext>().AddDefaultTokenProviders();
 
 
         var tokenValidationParameters = new TokenValidationParameters()

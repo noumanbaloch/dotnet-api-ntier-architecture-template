@@ -5,7 +5,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Breeze.Models.Entities;
 
-[Table(TableNames.USERS_TABLE)]
 public class UserEntity : IdentityUser<int>
 {
     [Column(DbColumnNames.FIRST_NAME)]

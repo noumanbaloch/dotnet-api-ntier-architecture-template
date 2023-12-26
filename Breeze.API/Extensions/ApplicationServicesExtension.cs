@@ -75,11 +75,14 @@ public static class ApplicationServicesExtension
         //});2
 
 
-        services.AddScoped<IDatabaseContext, DatabaseContext>();
-        services.AddDbContext<DatabaseContext>(options =>
+        services.AddScoped<IBreezeDbContext, BreezeDbContext>();
+        services.AddDbContext<BreezeDbContext>(options =>
         {
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-        });
+        },
+        ServiceLifetime.Scoped,
+        ServiceLifetime.Singleton);
+
         services.AddScoped<DeviceValidatorAttribute>();
         return services;
     }

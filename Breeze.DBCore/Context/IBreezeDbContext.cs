@@ -2,7 +2,7 @@
 
 namespace Breeze.DbCore.Context;
 
-public interface IDatabaseContext
+public interface IBreezeDbContext
 {
     DbSet<TEntity> Set<TEntity>() where TEntity : class;
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
