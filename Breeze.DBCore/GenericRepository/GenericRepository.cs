@@ -34,17 +34,6 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
             _dbSet.UpdateRange(entitiesChunk);
         }
     }
-
-    public async Task<IEnumerable<TEntity>> FindByAsync(Expression<Func<TEntity, bool>> predicate)
-    {
-        return await _dbSet.Where(predicate).ToListAsync();
-    }
-
-    public async Task<IEnumerable<TEntity>> FindByNoTrackingAsync(Expression<Func<TEntity, bool>> predicate)
-    {
-        return await _dbSet.AsNoTracking().Where(predicate).ToListAsync();
-    }
-
     public async Task<IEnumerable<TEntity>> GetAllAsync()
     {
         return await _dbSet.ToListAsync();
@@ -58,6 +47,16 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
     public async Task<TEntity?> GetByIdAsync<TKey>(TKey id)
     {
         return await _dbSet.FindAsync(id);
+    }
+
+    public async Task<IEnumerable<TEntity>> FindByAsync(Expression<Func<TEntity, bool>> predicate)
+    {
+        return await _dbSet.Where(predicate).ToListAsync();
+    }
+
+    public async Task<IEnumerable<TEntity>> FindByNoTrackingAsync(Expression<Func<TEntity, bool>> predicate)
+    {
+        return await _dbSet.AsNoTracking().Where(predicate).ToListAsync();
     }
 
     public async Task<TEntity?> FindByFirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
