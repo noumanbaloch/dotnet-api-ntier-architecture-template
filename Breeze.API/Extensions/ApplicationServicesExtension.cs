@@ -78,7 +78,12 @@ public static class ApplicationServicesExtension
         services.AddScoped<IBreezeDbContext, BreezeDbContext>();
         services.AddDbContext<BreezeDbContext>(options =>
         {
-            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
+                sqlServerOptionsAction =>
+                {
+                    sqlServerOptionsAction.EnableRetryOnFailure(maxRetryCount: 3, maxRetryDelay: TimeSpan.FromSeconds(1), errorNumbersToAdd: Array.Empty<int>());
+                    sqlServerOptionsAction.CommandTimeout(30);
+                });
         },
         ServiceLifetime.Scoped,
         ServiceLifetime.Singleton);
