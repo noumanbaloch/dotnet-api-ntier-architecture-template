@@ -1,7 +1,6 @@
 ﻿using Breeze.Models.Configurations;
 using Breeze.Models.Constants;
 using Breeze.Models.Dtos.Token.Request;
-using Breeze.Utilities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Globalization;

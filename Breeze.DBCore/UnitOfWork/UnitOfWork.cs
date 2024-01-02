@@ -14,6 +14,8 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private readonly string _connectionString;
     private bool disposed = false;
     private readonly DatabaseConfiguration _databaseConfiguration;
+    private Dictionary<Type, object> _repos = [];
+
     public UnitOfWork(IBreezeDbContext? dbContext,
         BreezeDbContext dbConnectionContext,
         IOptions<DatabaseConfiguration> databaseConfiguration)
@@ -23,7 +25,6 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         _databaseConfiguration = databaseConfiguration.Value;
     }
 
-    private Dictionary<Type, object> _repos = [];
 
     public IGenericRepository<TEntity> GetRepository<TEntity>() where TEntity : class
     {
@@ -48,42 +49,36 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     public async Task<IEnumerable<TEntity>> DapperSpListWithParamsAsync<TEntity>(string spName, DynamicParameters parameters)
     {
         using var connection = new SqlConnection(_connectionString);
-        await connection.OpenAsync().ConfigureAwait(false);
         return (await connection.QueryAsync<TEntity>(spName, parameters, commandTimeout: _databaseConfiguration.CommandTimeout)).ToList();
     }
 
     public async Task<IEnumerable<TEntity>> DapperSpListWithoutParamsAsync<TEntity>(string spName)
     {
         using var connection = new SqlConnection(_connectionString);
-        await connection.OpenAsync().ConfigureAwait(false);
         return (await connection.QueryAsync<TEntity>(spName, commandTimeout: _databaseConfiguration.CommandTimeout)).ToList();
     }
 
     public async Task<TEntity?> DapperSpSingleWithParamsAsync<TEntity>(string spName, DynamicParameters parameters)
     {
         using var connection = new SqlConnection(_connectionString);
-        await connection.OpenAsync().ConfigureAwait(false);
         return await connection.QueryFirstOrDefaultAsync<TEntity>(spName, parameters, commandTimeout: _databaseConfiguration.CommandTimeout);
     }
 
     public async Task<TEntity?> DapperSpSingleWithoutParamsAsync<TEntity>(string spName)
     {
         using var connection = new SqlConnection(_connectionString);
-        await connection.OpenAsync().ConfigureAwait(false);
         return await connection.QueryFirstOrDefaultAsync<TEntity>(spName, commandTimeout: _databaseConfiguration.CommandTimeout);
     }
 
     public async Task DapperSpExecuteWithoutParamsAsync(string spName)
     {
         using var connection = new SqlConnection(_connectionString);
-        await connection.OpenAsync();
         await connection.ExecuteAsync(spName, commandTimeout: _databaseConfiguration.CommandTimeout);
     }
 
     public async Task DapperSpExecuteWithParamsAsync(string spName, DynamicParameters parameters)
     {
         using var connection = new SqlConnection(_connectionString);
-        await connection.OpenAsync();
         await connection.ExecuteAsync(spName, parameters, commandTimeout: _databaseConfiguration.CommandTimeout);
     }
     protected virtual void Dispose(bool disposing)
