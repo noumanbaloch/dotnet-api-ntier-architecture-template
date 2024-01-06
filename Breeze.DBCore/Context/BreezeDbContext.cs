@@ -15,8 +15,7 @@ public class BreezeDbContext : IdentityDbContext<IdentityUser<int>, IdentityRole
     {
         builder
        .Entity<UserEntity>()
-       .ToTable(TableNames.USERS_TABLE)
-       .HasQueryFilter(e => !e.Deleted);
+       .ToTable(TableNames.USERS_TABLE);
 
         builder
        .Entity<BoardDetailEntity>()

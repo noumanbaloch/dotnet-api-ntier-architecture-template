@@ -15,6 +15,7 @@ using Breeze.Services.OTP;
 using Breeze.Services.ParamBuilder;
 using Breeze.Services.Subject;
 using Breeze.Services.TokenService;
+using Breeze.Utilities.HttpClientManager;
 using Microsoft.EntityFrameworkCore;
 
 namespace Breeze.API.Extensions;
@@ -23,6 +24,7 @@ public static class ApplicationServicesExtension
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddHttpClient<IHttpClientWrapper, HttpClientWrapper>();
         services.AddAutoMapper(typeof(AutoMappingProfile).Assembly);
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 

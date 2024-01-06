@@ -11,7 +11,7 @@ public class HttpClientWrapper : IHttpClientWrapper
         _httpClient = httpClient;
     }
 
-    public async Task<TResponse?> GetAsync<TResponse, TRequest>(string url, TRequest request)
+    public async Task<TResponse?> GetAsync<TResponse, TRequest>(string url, TRequest? request = default)
     {
         string queryString = request is null ? "" : $"?{Uri.EscapeDataString(request.ToString() ?? string.Empty)}";
         HttpResponseMessage response = await _httpClient.GetAsync($"{url}{queryString}");
