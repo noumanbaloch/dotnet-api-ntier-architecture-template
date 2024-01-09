@@ -12,7 +12,6 @@ using Breeze.Services.ClaimResolver;
 using Breeze.Services.HttpHeader;
 using Breeze.Services.TokenService;
 using Breeze.Utilities;
-using Microsoft.AspNetCore.Identity;
 using System.Transactions;
 
 namespace Breeze.Services.Auth;
