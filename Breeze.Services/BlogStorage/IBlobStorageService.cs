@@ -1,8 +1,8 @@
 ﻿using Azure.Storage.Blobs.Models;
 using Microsoft.AspNetCore.Http;
 
-namespace Breeze.Services.AzureBlogStorage;
-public interface IAzureBlobStorageService
+namespace Breeze.Services.BlogStorage;
+public interface IBlobStorageService
 {
     Task<string> UploadFileAsync(IFormFile file, string blobContainerName);
     Task<BlobDownloadInfo> DownloadFileAsync(string blobName, string blobContainerName);

@@ -2,12 +2,12 @@
 using Azure.Storage.Blobs.Models;
 using Microsoft.AspNetCore.Http;
 
-namespace Breeze.Services.AzureBlogStorage;
-public class AzureBlobStorageService : IAzureBlobStorageService
+namespace Breeze.Services.BlogStorage;
+public class BlobStorageService : IBlobStorageService
 {
     private readonly BlobServiceClient _blobServiceClient;
 
-    public AzureBlobStorageService(string connectionString)
+    public BlobStorageService(string connectionString)
     {
         _blobServiceClient = new BlobServiceClient(connectionString);
     }

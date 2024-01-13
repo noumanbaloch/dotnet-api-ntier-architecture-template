@@ -14,11 +14,11 @@ public static class Program
         //    .AddEnvironmentVariables()
         //    .Build();
 
-        //var connectionString = configuration["AzureBlobStorage:ConnectionString"];
+        //var connectionString = configuration["BlobStorage:ConnectionString"];
         //var containerName = ContainerNames.APPLICATION_LOGS_CONTAINER;
 
         //Log.Logger = new LoggerConfiguration()
-        //    .WriteTo.AzureBlobStorage(
+        //    .WriteTo.BlobStorage(
         //        connectionString: connectionString,
         //        restrictedToMinimumLevel: LogEventLevel.Warning,
         //        storageContainerName: containerName,

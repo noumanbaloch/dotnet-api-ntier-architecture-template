@@ -28,12 +28,12 @@ public static class HangfireConfigurationExtension
         app.UseHangfireDashboard("/hangfiredashboard", new DashboardOptions
         {
             DashboardTitle = "Hangfire Dashboard",
-            AppPath = env.IsProduction() ? "https://api.sharkemm.com/" : "https://localhost:44348/swagger/index.html",
+            AppPath = env.IsProduction() ? "https://api.breeze.com/" : "https://localhost:44348/swagger/index.html",
             Authorization = new[] {
                 new HangfireCustomBasicAuthenticationFilter
                 {
-                    User = configuration.GetSection("HangfireSettings:UserName").Value!,
-                    Pass = configuration.GetSection("HangfireSettings:Password").Value!
+                    User = configuration["HangfireSettings:UserName"]!,
+                    Pass = configuration["HangfireSettings:Password"]!              
                 }
             }
         });

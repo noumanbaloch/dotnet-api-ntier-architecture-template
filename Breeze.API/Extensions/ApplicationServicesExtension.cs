@@ -4,6 +4,7 @@ using Breeze.DbCore.Context;
 using Breeze.DbCore.UnitOfWork;
 using Breeze.Identity;
 using Breeze.Services.Auth;
+using Breeze.Services.BlogStorage;
 using Breeze.Services.Cache;
 using Breeze.Services.ClaimResolver;
 using Breeze.Services.DropDown;
@@ -12,7 +13,8 @@ using Breeze.Services.HttpHeader;
 using Breeze.Services.Logging;
 using Breeze.Services.MemoryCache;
 using Breeze.Services.OTP;
-using Breeze.Services.ParamBuilder;
+using Breeze.Services.Scheduled;
+using Breeze.Services.SecretManager;
 using Breeze.Services.Subject;
 using Breeze.Services.TokenService;
 using Breeze.Utilities.HttpClientManager;
@@ -55,26 +57,26 @@ public static class ApplicationServicesExtension
         services.AddScoped<ISubjectFacadeService, SubjectFacadeService>();
         services.AddScoped<ISubjectService, SubjectService>();
 
-        services.AddScoped<IParamBuilderService, ParamBuilderService>();
-
         services.AddScoped<IIdentityService, IdentityService>();
 
-        //string connectionString = configuration.GetSection("AzureBlobStorage:ConnectionString").Value!;
-        //services.AddSingleton<IAzureBlobStorageService>(new AzureBlobStorageService(connectionString));
+        services.AddScoped<IScheduledService, ScheduledService>();
 
+        //services.AddSingleton<IBlobStorageService>(provider =>
+        // new BlobStorageService(configuration["BlobStorage:ConnectionString"]!));
 
-        //string keyVaultUrl = "https://yourserver-azurekeyvault.vault.azure.net/";
         //services.AddScoped<ISecretManagerService>(provider =>
-        //    new SecretManagerService(keyVaultUrl));
+        //    new SecretManagerService(configuration["KeyVaultConfiguration:KeyVaultUrl"]!));
 
-        //services.AddScoped<IDatabaseContext, DatabaseContext>();
-        //services.AddDbContext<DatabaseContext>((provider, options) =>
+        //services.AddScoped<IBreezeDbContext, BreezeDbContext>();
+        //services.AddDbContext<BreezeDbContext>((provider, options) =>
         //{
-        //    var secretManagerService = provider.GetService<ISecretManagerService>();
-        //    var connectionString = secretManagerService.GetSecretAsync("QA-DBConnectionString").GetAwaiter().GetResult();
+        //    var secretManagerService = new SecretManagerService(configuration["KeyVaultConfiguration:KeyVaultUrl"]!);
+        //    var connectionString = secretManagerService.GetSecretAsync(configuration["KeyVaultConfiguration:SecretNames:ConnectionString"]!).GetAwaiter().GetResult();
 
         //    options.UseSqlServer(connectionString);
-        //});2
+        //},
+        //ServiceLifetime.Scoped,
+        //ServiceLifetime.Singleton);
 
 
         services.AddScoped<IBreezeDbContext, BreezeDbContext>();
