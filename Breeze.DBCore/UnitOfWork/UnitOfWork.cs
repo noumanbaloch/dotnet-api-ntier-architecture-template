@@ -5,6 +5,7 @@ using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using System.Data;
 
 namespace Breeze.DbCore.UnitOfWork;
 
@@ -70,17 +71,33 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         return await connection.QueryFirstOrDefaultAsync<TEntity>(spName, commandTimeout: _databaseConfiguration.CommandTimeout);
     }
 
+    public async Task DapperSpExecuteWithParamsAsync(string spName, DynamicParameters parameters)
+    {
+        using var connection = new SqlConnection(_connectionString);
+        await connection.ExecuteAsync(spName, parameters, commandTimeout: _databaseConfiguration.CommandTimeout);
+    }
+
     public async Task DapperSpExecuteWithoutParamsAsync(string spName)
     {
         using var connection = new SqlConnection(_connectionString);
         await connection.ExecuteAsync(spName, commandTimeout: _databaseConfiguration.CommandTimeout);
     }
 
-    public async Task DapperSpExecuteWithParamsAsync(string spName, DynamicParameters parameters)
+    public DynamicParameters BuildDynamicParameters<T>(Dictionary<string, (T Value, DbType Type)>? parametersDictionary = default)
     {
-        using var connection = new SqlConnection(_connectionString);
-        await connection.ExecuteAsync(spName, parameters, commandTimeout: _databaseConfiguration.CommandTimeout);
+        DynamicParameters parameters = new();
+
+        if (parametersDictionary != null)
+        {
+            foreach (var kvp in parametersDictionary)
+            {
+                parameters.Add(kvp.Key, kvp.Value.Value, kvp.Value.Type, direction: ParameterDirection.Input);
+            }
+        }
+
+        return parameters;
     }
+
     protected virtual void Dispose(bool disposing)
     {
         if (!disposed && disposing && _dbContext is not null)
