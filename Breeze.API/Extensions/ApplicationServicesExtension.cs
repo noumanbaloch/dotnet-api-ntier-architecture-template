@@ -4,7 +4,6 @@ using Breeze.DbCore.Context;
 using Breeze.DbCore.UnitOfWork;
 using Breeze.Identity;
 using Breeze.Services.Auth;
-using Breeze.Services.BlogStorage;
 using Breeze.Services.Cache;
 using Breeze.Services.ClaimResolver;
 using Breeze.Services.DropDown;
@@ -14,9 +13,8 @@ using Breeze.Services.Logging;
 using Breeze.Services.MemoryCache;
 using Breeze.Services.OTP;
 using Breeze.Services.Scheduled;
-using Breeze.Services.SecretManager;
 using Breeze.Services.Subject;
-using Breeze.Services.TokenService;
+using Breeze.Services.Token;
 using Breeze.Utilities.HttpClientManager;
 using Microsoft.EntityFrameworkCore;
 

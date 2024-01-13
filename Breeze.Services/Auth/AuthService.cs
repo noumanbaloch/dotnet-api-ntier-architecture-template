@@ -10,7 +10,7 @@ using Breeze.Models.ModelMapping;
 using Breeze.Services.Cache;
 using Breeze.Services.ClaimResolver;
 using Breeze.Services.HttpHeader;
-using Breeze.Services.TokenService;
+using Breeze.Services.Token;
 using Breeze.Utilities;
 using System.Transactions;
 

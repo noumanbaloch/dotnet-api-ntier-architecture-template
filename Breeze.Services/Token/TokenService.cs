@@ -8,7 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Breeze.Services.TokenService;
+namespace Breeze.Services.Token;
 public class TokenService : ITokenService
 {
     private readonly SymmetricSecurityKey _key;

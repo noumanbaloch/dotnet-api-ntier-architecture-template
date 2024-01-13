@@ -1,6 +1,6 @@
 ﻿using Breeze.Models.Dtos.Token.Request;
 
-namespace Breeze.Services.TokenService;
+namespace Breeze.Services.Token;
 
 public interface ITokenService
 {
