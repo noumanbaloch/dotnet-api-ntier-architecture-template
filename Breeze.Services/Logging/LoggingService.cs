@@ -2,7 +2,6 @@
 using Breeze.Models.Constants;
 using Breeze.Models.Entities;
 using Breeze.Services.ClaimResolver;
-using Breeze.Utilities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Extensions.Logging;
