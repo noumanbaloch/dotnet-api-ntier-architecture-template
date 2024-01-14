@@ -24,11 +24,7 @@ public class Startup
             .AddApplicationConfiguration(_configuration)
             .AddIdentityService(_configuration)
             //.AddHangfire(_configuration) if you want to add hang fire uncomment this
-            .AddControllers()
-            .AddNewtonsoftJson(options =>
-            {
-                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-            });
+            .AddControllers();
 
         services.AddCors(options =>
         {

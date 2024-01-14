@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Extensions.Logging;
 using System.Net;
+using System.Text.Json;
 
 namespace Breeze.Services.Logging;
 public class LoggingService : ILoggingService 
@@ -61,7 +62,7 @@ public class LoggingService : ILoggingService
         => _logger.LogError(ex, message: ex.Message);
 
     private string GetRequestHeaders()
-        => Newtonsoft.Json.JsonConvert.SerializeObject(_httpContextAccessor.HttpContext!.Request.Headers);
+        => JsonSerializer.Serialize(_httpContextAccessor.HttpContext!.Request.Headers);
 
     private string GetRequestMethod()
         => _httpContextAccessor.HttpContext!.Request.Method;

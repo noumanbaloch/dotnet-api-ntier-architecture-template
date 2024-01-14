@@ -2,9 +2,8 @@
 using Breeze.Models.Constants;
 using Breeze.Models.GenericResponses;
 using Breeze.Services.Logging;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using System.Net;
+using System.Text.Json;
 
 namespace Breeze.API.Middlewares;
 
@@ -36,8 +35,7 @@ public class ExceptionHandlingMiddleware
                 GenericResponse<string>.Failure(payload, ex.Message, (int)HttpStatusCode.InternalServerError) :
                 GenericResponse<string>.Failure(ApiResponseMessages.SOMETHING_WENT_WRONG, (int)HttpStatusCode.InternalServerError);
 
-            var settings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
-            var json = JsonConvert.SerializeObject(response, settings);
+            var json = JsonSerializer.Serialize(response);
 
             await context.Response.WriteAsync(json);
         }
