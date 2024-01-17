@@ -14,7 +14,6 @@ using Breeze.Services.MemoryCache;
 using Breeze.Services.OTP;
 using Breeze.Services.Scheduled;
 using Breeze.Services.Subject;
-using Breeze.Services.Token;
 using Breeze.Utilities.HttpClientManager;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,14 +27,12 @@ public static class ApplicationServicesExtension
         services.AddAutoMapper(typeof(AutoMappingProfile).Assembly);
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-        services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+        services.AddHttpContextAccessor();
         services.AddScoped<IHttpHeaderService, HttpHeaderService>();
 
         services.AddScoped<IClaimResolverService, ClaimResolverService>();
 
         services.AddScoped<IEmailService, EmailService>();
-
-        services.AddScoped<ITokenService, TokenService>();
 
         services.AddScoped<IDropDownService, DropDownService>();
 
