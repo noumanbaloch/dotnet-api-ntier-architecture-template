@@ -62,7 +62,7 @@ public static class ApplicationServicesExtension
         //services.AddSingleton<IBlobStorageService>(provider =>
         // new BlobStorageService(configuration["BlobStorage:ConnectionString"]!));
 
-        //services.AddScoped<ISecretManagerService>(provider =>
+        //services.AddSingleton<ISecretManagerService>(provider =>
         //    new SecretManagerService(configuration["KeyVaultConfiguration:KeyVaultUrl"]!));
 
         //services.AddScoped<IBreezeDbContext, BreezeDbContext>();

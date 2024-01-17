@@ -44,11 +44,11 @@ public class EmailService : IEmailService
         switch (useCaseName)
         {
             case OtpUseCases.REGISTER_OTP:
-                return EmailTemplates.REGISTER_TEMPLATE;
+                return EmailTemplates.REGISTERION_EMAIL_TEMPLATE;
             case OtpUseCases.LOGIN_OTP:
-                return EmailTemplates.LOGIN_TEMPLATE;
+                return EmailTemplates.LOGIN_EMAIL_TEMPLATE;
             case OtpUseCases.FORGOT_OTP:
-                return EmailTemplates.FORGOT_PASSWORD_TEMPLATE;
+                return EmailTemplates.FORGOT_PASSWORD_EMAIL_TEMPLATE;
             case OtpUseCases.VERIFY_EMAIL_OTP:
                 return EmailTemplates.VERIFY_EMAIL_TEMPLATE;
         }

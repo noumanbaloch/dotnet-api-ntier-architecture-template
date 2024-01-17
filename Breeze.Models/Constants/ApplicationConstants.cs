@@ -122,9 +122,9 @@ public struct CacheKeys
 
 public struct EmailTemplates
 {
-    public const string REGISTER_TEMPLATE = "register";
-    public const string LOGIN_TEMPLATE = "login";
-    public const string FORGOT_PASSWORD_TEMPLATE = "forgot";
+    public const string REGISTERION_EMAIL_TEMPLATE = "register";
+    public const string LOGIN_EMAIL_TEMPLATE = "login";
+    public const string FORGOT_PASSWORD_EMAIL_TEMPLATE = "forgot";
     public const string VERIFY_EMAIL_TEMPLATE = "verify_email";
 }
 
