@@ -35,8 +35,6 @@ public static class ApplicationServicesExtension
 
         services.AddScoped<IEmailService, EmailService>();
 
-        services.AddScoped<ITokenService, TokenService>();
-
         services.AddScoped<IDropDownService, DropDownService>();
 
         services.AddScoped<IAuthFacadeService, AuthFacadeService>();
