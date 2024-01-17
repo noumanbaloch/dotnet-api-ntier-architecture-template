@@ -27,7 +27,7 @@ public static class ApplicationServicesExtension
         services.AddAutoMapper(typeof(AutoMappingProfile).Assembly);
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-        services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+        services.AddHttpContextAccessor();
         services.AddScoped<IHttpHeaderService, HttpHeaderService>();
 
         services.AddScoped<IClaimResolverService, ClaimResolverService>();
