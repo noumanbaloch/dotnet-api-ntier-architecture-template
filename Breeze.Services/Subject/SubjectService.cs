@@ -1,4 +1,5 @@
 ﻿using Breeze.DbCore.UnitOfWork;
+using Breeze.DBCore.Dapper;
 using Breeze.Models.Constants;
 using Breeze.Models.Dtos.Subject.SP;
 using System.Data;
@@ -6,19 +7,21 @@ using System.Data;
 namespace Breeze.Services.Subject;
 public class SubjectService : ISubjectService
 {
-    private readonly IUnitOfWork _unitOfWork;
-    public SubjectService(IUnitOfWork unitOfWork)
+    private readonly IDapperRepository _dapperRepository;
+
+    public SubjectService(
+        IDapperRepository dapperRepository)
     {
-        _unitOfWork = unitOfWork;
+        _dapperRepository = dapperRepository;
     }
 
     public async Task<IEnumerable<SubjectSummarySPDto>> GetSubjectSummary(int subjectId)
     {
-        var parameters = _unitOfWork.BuildDynamicParameters(new Dictionary<string, (int? Value, DbType Type)>
+        var parameters = _dapperRepository.BuildDynamicParameters(new Dictionary<string, (int? Value, DbType Type)>
         {
             { DapperSPParams.SUBJECT_ID, (subjectId, DbType.Int32) } 
         });
 
-        return await _unitOfWork.DapperSpListWithParamsAsync<SubjectSummarySPDto>($"{CommandConstants.EXEC_COMMAND} {StoreProcedureNames.GET_SUBJECT_SUMMARY} {DapperSPParams.STUDENT_ID}, {DapperSPParams.DISCIPLINE_ID}, {DapperSPParams.SUBJECT_ID}", parameters);
+        return await _dapperRepository.DapperSpListWithParamsAsync<SubjectSummarySPDto>($"{CommandConstants.EXEC_COMMAND} {StoreProcedureNames.GET_SUBJECT_SUMMARY} {DapperSPParams.STUDENT_ID}, {DapperSPParams.DISCIPLINE_ID}, {DapperSPParams.SUBJECT_ID}", parameters);
     }
 }

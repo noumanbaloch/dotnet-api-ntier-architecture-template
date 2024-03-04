@@ -2,6 +2,8 @@
 using Breeze.API.MappingProfile;
 using Breeze.DbCore.Context;
 using Breeze.DbCore.UnitOfWork;
+using Breeze.DBCore.Dapper;
+using Breeze.DBCore.Factory;
 using Breeze.Identity;
 using Breeze.Services.Auth;
 using Breeze.Services.Cache;
@@ -55,6 +57,11 @@ public static class ApplicationServicesExtension
         services.AddScoped<IIdentityService, IdentityService>();
 
         services.AddScoped<IScheduledService, ScheduledService>();
+
+        services.AddScoped<IDapperRepository, DapperRepository>();
+
+        services.AddSingleton<ISqlConnectionFactory>(_ =>
+        new SqlConnectionFactory(configuration.GetConnectionString("DefaultConnection")!));
 
         //services.AddSingleton<IBlobStorageService>(provider =>
         // new BlobStorageService(configuration["BlobStorage:ConnectionString"]!));
